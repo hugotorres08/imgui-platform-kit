@@ -1,6 +1,7 @@
 #include "user_interface.h"
 
 
+
 namespace imgui_kit
 {
 	namespace win32_directx12
@@ -25,6 +26,9 @@ namespace imgui_kit
 			windowHandle = ::CreateWindowW(windowClass.lpszClassName, lpszWindowName,
 				WS_OVERLAPPEDWINDOW, 0, 0, parameters.windowParameters.width, parameters.windowParameters.height, nullptr, nullptr, windowClass.hInstance, nullptr);
 
+
+            loadIcon();
+
 			// Initialize Direct3D
 			if (!CreateDeviceD3D(windowHandle))
 			{
@@ -48,7 +52,6 @@ namespace imgui_kit
 			io_ref.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
 			//io.ConfigViewportsNoAutoMerge = true;
 			//io.ConfigViewportsNoTaskBarIcon = true;
-            parameters.styleParameters.apply();
 
 			// Setup Dear ImGui style
 			//ImGui::StyleColorsDark();
@@ -56,6 +59,7 @@ namespace imgui_kit
 
 			// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
 			//ImGuiStyle& style = ImGui::GetStyle();
+            parameters.styleParameters.apply();
 
 			// Setup Platform/Renderer backends
 			ImGui_ImplWin32_Init(windowHandle);
@@ -64,12 +68,7 @@ namespace imgui_kit
 				g_pd3dSrvDescHeap->GetCPUDescriptorHandleForHeapStart(),
 				g_pd3dSrvDescHeap->GetGPUDescriptorHandleForHeapStart());
 
-			// Load Fonts
-			size_t pos = 0;
-			while ((pos = parameters.fontParameters.path.find('/')) != std::string::npos)
-                parameters.fontParameters.path.replace(pos, 1, "\\");
-			const ImFont* font = io_ref.Fonts->AddFontFromFileTTF(parameters.fontParameters.path.c_str(), static_cast<float>(parameters.fontParameters.size));
-			IM_ASSERT(font != NULL);
+			loadFont();
 		}
 
 		void UserInterface::render()
@@ -168,10 +167,44 @@ namespace imgui_kit
 	        return shutdownRequest;
         }
 
+        void UserInterface::loadIcon() const
+		{
+            const HICON hIcon = static_cast<HICON>(LoadImage(
+                nullptr,                        // hInstance must be NULL when loading from a file
+                parameters.iconPath.c_str(),    // Path to the icon file
+                IMAGE_ICON,                     // Specifies that the file is an icon
+                0, 0,                        // Use the actual size of the icon
+                LR_DEFAULTSIZE | LR_LOADFROMFILE | LR_LOADTRANSPARENT
+            ));
+
+            if (hIcon != nullptr)
+            {
+                SendMessage(windowHandle, WM_SETICON, ICON_BIG, reinterpret_cast<LPARAM>(hIcon));
+                SendMessage(windowHandle, WM_SETICON, ICON_SMALL, reinterpret_cast<LPARAM>(hIcon));
+            }
+            else
+            {
+                const DWORD error = GetLastError();
+                std::cerr << "Failed to load icon. Error code: " << error << std::endl;
+            }
+		}
+
+        void UserInterface::loadFont()
+		{
+            const ImGuiIO& io_ref = ImGui::GetIO(); (void)io_ref;
+            size_t pos;
+            while ((pos = parameters.fontParameters.path.find('/')) != std::string::npos)
+                parameters.fontParameters.path.replace(pos, 1, "\\");
+            const ImFont* font = io_ref.Fonts->AddFontFromFileTTF(parameters.fontParameters.path.c_str(), static_cast<float>(parameters.fontParameters.size));
+            IM_ASSERT(font != NULL);
+		}
+
 		void UserInterface::renderWindows()
 		{
             ImGui::Begin("Hello, world!");
             ImGui::Text("This is some useful text.");
+            ImGui::Button("Button");
+            ImGui::SliderFloat("Slider", &parameters.styleParameters.themeColor.x, 0.0f, 1.0f);
             ImGui::End();
 		}
 	}

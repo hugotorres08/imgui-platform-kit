@@ -9,6 +9,7 @@
 #include <string>
 #include <tchar.h>
 #include <stdexcept>
+#include <iostream>
 
 #include "implot.h"
 #include "implot_internal.h"
@@ -23,6 +24,7 @@
 #endif
 
 #include "user_interface_parameters.h"
+
 
 namespace imgui_kit
 {
@@ -44,7 +46,9 @@ namespace imgui_kit
 			void shutdown() const;
 			bool isShutdownRequested() const;
 		private:
-			static void renderWindows();
+			void loadIcon() const;
+			void loadFont();
+			void renderWindows();
 		};
 	}
 }

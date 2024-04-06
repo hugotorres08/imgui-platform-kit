@@ -4,6 +4,7 @@
 // PVS-Studio Static Code Analyzer for C, C++, C#, and Java: https://pvs-studio.com
 
 #include <exception>
+#include <filesystem>
 #include <iostream>
 
 #include "user_interface.h"
@@ -13,13 +14,17 @@ int main(int argc, char* argv[])
 	try
 	{
 		std::cout << "Hello, World!" << std::endl;
+		std::cout << "Current working directory: "
+			<< std::filesystem::current_path()
+			<< std::endl;
 
 		using namespace imgui_kit::win32_directx12;
 
 		const WindowParameters windowParameters(L"Hello, World!", 1280, 720);
-		const FontParameters fontParameters("C:/Windows/Fonts/arial.ttf", 22);
-		StyleParameters styleParameters;
-		const UserInterfaceParameters parameters(windowParameters, fontParameters, styleParameters);
+		const FontParameters fontParameters("../../resources/fonts/Lexend-Light.ttf", 22);
+		const StyleParameters styleParameters(ImVec4(0.2f, 0.2f, 0.2f, 1.0f));
+		const std::string iconPath = "../../resources/icons/icon.ico";
+		const UserInterfaceParameters parameters(windowParameters, fontParameters, styleParameters, iconPath);
 		UserInterface userInterface(parameters);
 
 		userInterface.initialize();
