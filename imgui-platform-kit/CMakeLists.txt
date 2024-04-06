@@ -50,12 +50,16 @@ add_compile_definitions(OUTPUT_DIRECTORY="${OUTPUT_DIRECTORY}")
 
 # Set header files
 set(header 
-
+"include/user_interface.h"
+"include/user_interface_window.h"
+"include/user_interface_parameters.h"
 )
 
 # Set source files
 set(src 
-
+"src/user_interface.cpp"
+"src/user_interface_window.cpp"
+"src/user_interface_parameters.cpp"
 )
 
 # Define library target
