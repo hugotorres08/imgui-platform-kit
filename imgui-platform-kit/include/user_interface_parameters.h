@@ -43,22 +43,38 @@ namespace imgui_kit
 			void apply() const;
 		};
 
+		struct IconParameters
+		{
+			std::string path;
+			int width;
+			int height;
+
+			IconParameters(std::string path = "", int width = 0, int height = 0);
+		};
+
+		struct BackgroundImageParameters
+		{
+			std::string path;
+			double scale;
+			int width;
+			int height;
+
+			BackgroundImageParameters(std::string path = "", double scale = 1.0);
+		};
+
 		struct UserInterfaceParameters
 		{
 			WindowParameters windowParameters;
 			FontParameters fontParameters;
 			StyleParameters styleParameters;
-			std::string iconPath;
+			IconParameters iconParameters;
+			BackgroundImageParameters backgroundImageParameters;
 
 			UserInterfaceParameters(WindowParameters windowParameters, 
-				FontParameters fontParameters);
-			UserInterfaceParameters(WindowParameters windowParameters, 
-				FontParameters fontParameters, 
-				const StyleParameters& styleParameters);
-			UserInterfaceParameters(WindowParameters windowParameters, 
-				FontParameters fontParameters, 
-				const StyleParameters& styleParameters, 
-				std::string iconPath);
+				FontParameters fontParameters,
+				const StyleParameters& styleParameters = {},
+				IconParameters iconParameters = {},
+				BackgroundImageParameters bgImgParameters ={}) ;
 		};
 	}
 }

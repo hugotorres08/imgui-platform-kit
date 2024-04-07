@@ -25,15 +25,43 @@
 
 #include "user_interface_parameters.h"
 
-
 namespace imgui_kit
 {
 	namespace win32_directx12
 	{
+		struct DX12BackgroundImageTexture
+		{
+			ID3D12Resource* texture;
+			D3D12_CPU_DESCRIPTOR_HANDLE srv_cpu_handle;
+			D3D12_GPU_DESCRIPTOR_HANDLE srv_gpu_handle;
+			BackgroundImageParameters parameters;
+
+			DX12BackgroundImageTexture(BackgroundImageParameters parameters)
+				: texture(nullptr), parameters(std::move(parameters))
+			{
+				srv_cpu_handle.ptr = 0;
+				srv_gpu_handle.ptr = 0;
+			}
+
+			void release()
+			{
+				if (texture)
+					texture->Release();
+				texture = nullptr;
+			}
+
+			~DX12BackgroundImageTexture()
+			{
+				if (texture)
+					texture->Release();
+			}
+		};
+
 		class UserInterface
 		{
 		private:
 			UserInterfaceParameters parameters;
+			DX12BackgroundImageTexture backgroundImageTexture;
 			HWND windowHandle;
 			WNDCLASSEXW windowClass;
 			bool shutdownRequest;
@@ -43,12 +71,14 @@ namespace imgui_kit
 
 			void initialize();
 			void render();
-			void shutdown() const;
+			void shutdown();
 			bool isShutdownRequested() const;
 		private:
 			void loadIcon() const;
 			void loadFont();
+			void loadBackgroundImage();
 			void renderWindows();
+			void renderBackgroundImage() const;
 		};
 	}
 }
@@ -86,3 +116,4 @@ void CleanupRenderTarget();
 void WaitForLastSubmittedFrame();
 FrameContext* WaitForNextFrameResources();
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+bool LoadTextureFromFile(const char* filename, ID3D12Device* d3d_device, D3D12_CPU_DESCRIPTOR_HANDLE srv_cpu_handle, ID3D12Resource** out_tex_resource, int* out_width, int* out_height);

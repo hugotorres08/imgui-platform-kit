@@ -53,6 +53,7 @@ set(header
 "include/user_interface.h"
 "include/user_interface_window.h"
 "include/user_interface_parameters.h"
+"include/stb_image.h"
 )
 
 # Set source files

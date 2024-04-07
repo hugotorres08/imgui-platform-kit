@@ -22,9 +22,16 @@ int main(int argc, char* argv[])
 
 		const WindowParameters windowParameters(L"Hello, World!", 1280, 720);
 		const FontParameters fontParameters("../../resources/fonts/Lexend-Light.ttf", 22);
-		const StyleParameters styleParameters(ImVec4(0.2f, 0.2f, 0.2f, 1.0f));
-		const std::string iconPath = "../../resources/icons/icon.ico";
-		const UserInterfaceParameters parameters(windowParameters, fontParameters, styleParameters, iconPath);
+		const StyleParameters styleParameters(ImVec4(0.2f, 0.2f, 0.2f, 0.8f));
+		const IconParameters iconParameters("../../resources/icons/icon.ico");
+		const BackgroundImageParameters backgroundImageParameters("../../resources/images/penrose-triangle-icon.png",
+			0.7);
+
+		const UserInterfaceParameters parameters(windowParameters, 
+			fontParameters, 
+			styleParameters, 
+			iconParameters, 
+			backgroundImageParameters);
 		UserInterface userInterface(parameters);
 
 		userInterface.initialize();
