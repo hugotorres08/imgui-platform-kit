@@ -53,6 +53,8 @@ set(header
 "include/user_interface.h"
 "include/user_interface_window.h"
 "include/user_interface_parameters.h"
+"include/template_window.h"
+"include/log_window.h"
 "include/stb_image.h"
 )
 
@@ -61,6 +63,8 @@ set(src
 "src/user_interface.cpp"
 "src/user_interface_window.cpp"
 "src/user_interface_parameters.cpp"
+"src/template_window.cpp"
+"src/log_window.cpp"
 )
 
 # Define library target

@@ -10,6 +10,7 @@
 #include <tchar.h>
 #include <stdexcept>
 #include <iostream>
+#include <vector>
 
 #include "implot.h"
 #include "implot_internal.h"
@@ -23,7 +24,9 @@
 #pragma comment(lib, "dxguid.lib")
 #endif
 
+
 #include "user_interface_parameters.h"
+#include "user_interface_window.h"
 
 namespace imgui_kit
 {
@@ -64,6 +67,7 @@ namespace imgui_kit
 			DX12BackgroundImageTexture backgroundImageTexture;
 			HWND windowHandle;
 			WNDCLASSEXW windowClass;
+			std::vector<std::shared_ptr<UserInterfaceWindow>> windows;
 			bool shutdownRequest;
 		public:
 			UserInterface(UserInterfaceParameters parameters);
@@ -72,12 +76,13 @@ namespace imgui_kit
 			void initialize();
 			void render();
 			void shutdown();
+			void addWindow(const std::shared_ptr<UserInterfaceWindow>& window);
 			bool isShutdownRequested() const;
 		private:
 			void loadIcon() const;
 			void loadFont();
 			void loadBackgroundImage();
-			void renderWindows();
+			void renderWindows() const;
 			void renderBackgroundImage() const;
 		};
 	}

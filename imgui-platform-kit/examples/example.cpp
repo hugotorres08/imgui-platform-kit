@@ -8,6 +8,8 @@
 #include <iostream>
 
 #include "user_interface.h"
+#include "template_window.h"
+#include "log_window.h"
 
 int main(int argc, char* argv[])
 {
@@ -18,6 +20,7 @@ int main(int argc, char* argv[])
 			<< std::filesystem::current_path()
 			<< std::endl;
 
+		using namespace imgui_kit;
 		using namespace imgui_kit::win32_directx12;
 
 		const WindowParameters windowParameters(L"Hello, World!", 1280, 720);
@@ -33,6 +36,9 @@ int main(int argc, char* argv[])
 			iconParameters, 
 			backgroundImageParameters);
 		UserInterface userInterface(parameters);
+
+		userInterface.addWindow(std::make_shared<TemplateWindow>());
+		userInterface.addWindow(std::make_shared<LogWindow>());
 
 		userInterface.initialize();
 		while(!userInterface.isShutdownRequested())

@@ -167,6 +167,11 @@ namespace imgui_kit
 			::UnregisterClassW(windowClass.lpszClassName, windowClass.hInstance);
 		}
 
+        void UserInterface::addWindow(const std::shared_ptr<UserInterfaceWindow>& window)
+        {
+			windows.push_back(window);
+        }
+
         bool UserInterface::isShutdownRequested() const
         {
 	        return shutdownRequest;
@@ -234,13 +239,10 @@ namespace imgui_kit
 				std::cerr << "Failed to load background image." << std::endl;
 		}
 
-		void UserInterface::renderWindows()
+		void UserInterface::renderWindows() const
 		{
-            ImGui::Begin("Hello, world!");
-            ImGui::Text("This is some useful text.");
-            ImGui::Button("Button");
-            ImGui::SliderFloat("Slider", &parameters.styleParameters.themeColor.x, 0.0f, 1.0f);
-            ImGui::End();
+            for (const auto& window : windows)
+                window->render();
 		}
 
         void UserInterface::renderBackgroundImage() const
