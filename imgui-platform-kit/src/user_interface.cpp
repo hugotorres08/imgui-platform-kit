@@ -167,11 +167,6 @@ namespace imgui_kit
 			::UnregisterClassW(windowClass.lpszClassName, windowClass.hInstance);
 		}
 
-        void UserInterface::addWindow(const std::shared_ptr<UserInterfaceWindow>& window)
-        {
-			windows.push_back(window);
-        }
-
         bool UserInterface::isShutdownRequested() const
         {
 	        return shutdownRequest;

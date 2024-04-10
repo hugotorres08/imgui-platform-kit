@@ -76,8 +76,13 @@ namespace imgui_kit
 			void initialize();
 			void render();
 			void shutdown();
-			void addWindow(const std::shared_ptr<UserInterfaceWindow>& window);
 			bool isShutdownRequested() const;
+			template<typename T, typename... Args>
+			void addWindow(Args&&... args)
+			{
+				auto window = std::make_shared<T>(std::forward<Args>(args)...);
+				windows.push_back(std::move(window));
+			}
 		private:
 			void loadIcon() const;
 			void loadFont();

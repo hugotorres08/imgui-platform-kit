@@ -37,8 +37,9 @@ int main(int argc, char* argv[])
 			backgroundImageParameters);
 		UserInterface userInterface(parameters);
 
-		userInterface.addWindow(std::make_shared<TemplateWindow>());
-		userInterface.addWindow(std::make_shared<LogWindow>());
+		userInterface.addWindow<TemplateWindow>();
+		userInterface.addWindow<LogWindow>();
+		//userInterface.addWindow<SomeOtherWindow>(arg1, arg2, arg3);
 
 		userInterface.initialize();
 		while(!userInterface.isShutdownRequested())
