@@ -11,6 +11,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <vector>
+#include <filesystem>
 
 #include "implot.h"
 #include "implot_internal.h"
@@ -38,6 +39,14 @@ namespace imgui_kit
 			D3D12_CPU_DESCRIPTOR_HANDLE srv_cpu_handle;
 			D3D12_GPU_DESCRIPTOR_HANDLE srv_gpu_handle;
 			BackgroundImageParameters parameters;
+
+			DX12BackgroundImageTexture()
+				: texture(nullptr)
+				,parameters()
+			{
+				srv_cpu_handle.ptr = 0;
+				srv_gpu_handle.ptr = 0;
+			}
 
 			DX12BackgroundImageTexture(BackgroundImageParameters parameters)
 				: texture(nullptr), parameters(std::move(parameters))
@@ -70,6 +79,7 @@ namespace imgui_kit
 			std::vector<std::shared_ptr<UserInterfaceWindow>> windows;
 			bool shutdownRequest;
 		public:
+			UserInterface();
 			UserInterface(UserInterfaceParameters parameters);
 			~UserInterface() = default;
 

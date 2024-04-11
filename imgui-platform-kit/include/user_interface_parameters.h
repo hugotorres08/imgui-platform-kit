@@ -21,7 +21,7 @@ namespace imgui_kit
 		std::string path;
 		int size;
 
-		FontParameters(std::string path, int size = 12);
+		FontParameters(std::string path = "", int size = 12);
 	};
 
 	constexpr ImVec4 defaultThemeColor = ImVec4(0.2f, 0.2f, 0.2f, 1.0f); // A darkish gray
@@ -68,8 +68,8 @@ namespace imgui_kit
 		IconParameters iconParameters;
 		BackgroundImageParameters backgroundImageParameters;
 
-		UserInterfaceParameters(WindowParameters windowParameters, 
-			FontParameters fontParameters,
+		UserInterfaceParameters(WindowParameters windowParameters = {},
+			FontParameters fontParameters = {},
 			const StyleParameters& styleParameters = {},
 			IconParameters iconParameters = {},
 			BackgroundImageParameters bgImgParameters ={}) ;

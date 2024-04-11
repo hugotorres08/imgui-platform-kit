@@ -8,14 +8,21 @@ namespace imgui_kit
 {
 	namespace win32_directx12
 	{
+        UserInterface::UserInterface()
+	        : parameters()
+            , backgroundImageTexture()
+            , windowHandle(nullptr)
+            , windowClass({})
+            , shutdownRequest(false)
+        {}
+
 		UserInterface::UserInterface(UserInterfaceParameters parameters)
 			: parameters(std::move(parameters))
 			, backgroundImageTexture(parameters.backgroundImageParameters)
 			, windowHandle(nullptr)
 			, windowClass({}) 
 			, shutdownRequest(false)
-		{
-		}
+		{}
 
 		void UserInterface::initialize()
 		{
@@ -200,6 +207,14 @@ namespace imgui_kit
             size_t pos;
             while ((pos = parameters.fontParameters.path.find('/')) != std::string::npos)
                 parameters.fontParameters.path.replace(pos, 1, "\\");
+
+            if (!std::filesystem::exists(parameters.fontParameters.path))
+            {
+                std::cerr << "Font file does not exist: " << parameters.fontParameters.path << std::endl;
+                io_ref.Fonts->AddFontDefault();
+                return;
+            }
+
             const ImFont* font = io_ref.Fonts->AddFontFromFileTTF(parameters.fontParameters.path.c_str(), static_cast<float>(parameters.fontParameters.size));
             if (font == nullptr)
             {

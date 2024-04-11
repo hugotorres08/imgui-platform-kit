@@ -120,6 +120,5 @@ namespace imgui_kit
 				styleParameters(styleParameters),
 				iconParameters(std::move(iconParameters)),
 				backgroundImageParameters(std::move(bgImgParameters))
-	{
-	}
+	{}
 }
