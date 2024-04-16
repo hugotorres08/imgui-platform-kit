@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
 		const FontParameters fontParameters("../../resources/fonts/Lexend-Light.ttf", 22);
 		const StyleParameters styleParameters(ImVec4(0.2f, 0.2f, 0.2f, 0.8f));
 		const IconParameters iconParameters("../../resources/icons/icon.ico");
-		const BackgroundImageParameters backgroundImageParameters("../../resources/images/penrose-triangle-icon.png",
+		const BackgroundImageParameters backgroundImageParameters("../../resources/images/logo-bg.png",
 			0.7);
 
 		const UserInterfaceParameters parameters(windowParameters, 
