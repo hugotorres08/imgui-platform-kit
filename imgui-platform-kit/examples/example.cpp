@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
 		using namespace imgui_kit::win32_directx12;
 
 		// You can use the following parameters to customize the user interface
-		const WindowParameters windowParameters(L"Hello, World!", 1280, 720);
+		const WindowParameters windowParameters(L"Hello, World!");
 		const FontParameters fontParameters("../../resources/fonts/Lexend-Light.ttf", 22);
 		const StyleParameters styleParameters(ImVec4(0.2f, 0.2f, 0.2f, 0.8f));
 		const IconParameters iconParameters("../../resources/icons/icon.ico");

@@ -3,13 +3,30 @@
 namespace imgui_kit
 {
 	WindowParameters::WindowParameters(std::wstring title, int width, int height)
-		: title(std::move(title))
-		, width(width)
-		, height(height)
+		: title(std::move(title)), width(width), height(height)
 	{
-		if (width <= 0)
+		if (this->width <= 0 || this->height <= 0)
+		{
+			const HMONITOR hMonitor = MonitorFromWindow(nullptr, MONITOR_DEFAULTTOPRIMARY);
+			MONITORINFO mi = { sizeof(mi) };
+			if (GetMonitorInfo(hMonitor, &mi))
+			{
+				this->width = mi.rcMonitor.right - mi.rcMonitor.left;
+				this->height = mi.rcMonitor.bottom - mi.rcMonitor.top;
+			}
+			else
+			{
+				RECT desktop;
+				const HWND hDesktop = GetDesktopWindow();
+				GetWindowRect(hDesktop, &desktop);
+				this->width = desktop.right;
+				this->height = desktop.bottom;
+			}
+		}
+
+		if (this->width <= 0)  
 			throw std::invalid_argument("Width must be greater than 0.");
-		if (height <= 0)
+		if (this->height <= 0)  
 			throw std::invalid_argument("Height must be greater than 0.");
 	}
 

@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <stdexcept>
+#include <Windows.h>
 
 #include "imgui.h"
 
@@ -13,7 +14,7 @@ namespace imgui_kit
 		int width;
 		int height;
 
-		WindowParameters(std::wstring windowTitle = L"default title", int width = 1280, int height = 720);
+		WindowParameters(std::wstring title = L"default title", int width = -1, int height = -1);
 	};
 
 	struct FontParameters
