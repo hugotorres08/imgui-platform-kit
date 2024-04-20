@@ -173,7 +173,7 @@ namespace imgui_kit
         // Append the log message
         buffer.appendfv(message, args);
 
-        //buffer.append("\n");
+        buffer.append("\n");
         va_end(args);
 
         // Update lineOffsets
