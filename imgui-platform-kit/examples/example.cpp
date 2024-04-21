@@ -7,12 +7,6 @@
 #include <filesystem>
 #include <iostream>
 
-//#if defined(_WIN32)
-//#include "win32/user_interface.h"
-//#elif defined(__linux__)
-//#include "linux/user_interface.h"
-//#endif
-
 #include "user_interface.h"
 #include "template_window.h"
 #include "log_window.h"
