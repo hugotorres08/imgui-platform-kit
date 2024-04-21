@@ -43,21 +43,41 @@ set(OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/data")
 add_compile_definitions(OUTPUT_DIRECTORY="${OUTPUT_DIRECTORY}")
 
 # Header and source files
-set(header 
-    "include/user_interface.h"
+set(common_header
     "include/user_interface_window.h"
     "include/user_interface_parameters.h"
     "include/template_window.h"
     "include/log_window.h"
     "include/stb_image.h"
+    "include/user_interface.h"
 )
-set(src 
-    "src/user_interface.cpp"
+if(WIN32)
+set(platform_header
+    "include/win32/win32_dx12_user_interface.h"
+)
+elseif(UNIX AND NOT APPLE)
+set(platform_header
+	"include/linux/user_interface.h"
+)
+endif()
+set(header ${common_header} ${platform_header})
+
+set(common_src
     "src/user_interface_window.cpp"
     "src/user_interface_parameters.cpp"
     "src/template_window.cpp"
     "src/log_window.cpp"
 )
+if(WIN32)
+set(platform_src
+    "src/win32/win32_dx12_user_interface.cpp"
+)
+elseif(UNIX AND NOT APPLE)
+set(platform_src
+	"src/linux/glfw_opengl3_user_interface.cpp"
+)
+endif()
+set(src ${common_src} ${platform_src})
 
 # Library target definition
 add_library(${CMAKE_PROJECT_NAME} ${header} ${src})
@@ -65,9 +85,20 @@ target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:${IMGUI_PLATFORM_KIT_INC_INSTALL_DIR}> 
 )
-# Setup imgui - win32 Directx12
-find_package(imgui CONFIG REQUIRED)
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE imgui::imgui "d3d12.lib" "dxgi.lib" "d3dcompiler.lib")
+
+if(WIN32)
+	# Setup imgui - win32 Directx12
+	find_package(imgui CONFIG REQUIRED)
+	target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE imgui::imgui "d3d12.lib" "dxgi.lib" "d3dcompiler.lib")
+elseif(UNIX AND NOT APPLE)
+    # Setup GLFW and OpenGL
+    find_package(glfw3 REQUIRED)
+    find_package(OpenGL REQUIRED)
+
+    # Setup imgui
+    find_package(imgui CONFIG REQUIRED)
+    target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE imgui::imgui glfw OpenGL)
+endif()
 
 # Setup implot
 find_package(implot CONFIG REQUIRED)

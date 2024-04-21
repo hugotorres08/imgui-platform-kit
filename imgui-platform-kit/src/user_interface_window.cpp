@@ -2,7 +2,5 @@
 
 namespace imgui_kit
 {
-	namespace win32_directx12
-	{
-	}
+
 }

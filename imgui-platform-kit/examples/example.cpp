@@ -7,6 +7,12 @@
 #include <filesystem>
 #include <iostream>
 
+//#if defined(_WIN32)
+//#include "win32/user_interface.h"
+//#elif defined(__linux__)
+//#include "linux/user_interface.h"
+//#endif
+
 #include "user_interface.h"
 #include "template_window.h"
 #include "log_window.h"
@@ -21,10 +27,9 @@ int main(int argc, char* argv[])
 			<< std::endl;
 
 		using namespace imgui_kit;
-		using namespace imgui_kit::win32_directx12;
 
 		// You can use the following parameters to customize the user interface
-		const WindowParameters windowParameters(L"Hello, World!");
+		const WindowParameters windowParameters("Hello, World!");
 		const FontParameters fontParameters("../../resources/fonts/Lexend-Light.ttf", 22);
 		const StyleParameters styleParameters(ImVec4(0.2f, 0.2f, 0.2f, 0.8f));
 		const IconParameters iconParameters("../../resources/icons/icon.ico");
@@ -44,6 +49,12 @@ int main(int argc, char* argv[])
 		userInterface.addWindow<TemplateWindow>();
 		userInterface.addWindow<LogWindow>();
 		//userInterface.addWindow<SomeOtherWindow>(arg1, arg2, arg3);
+
+		LogWindow::addLog("[INFO] User interface initialized.");
+		LogWindow::addLog("[DEBUG] Debug message.");
+		LogWindow::addLog("[WARNING] Warning message.");
+		LogWindow::addLog("[ERROR] Error message.");
+		LogWindow::addLog("[FATAL] Fatal error message.");
 
 		userInterface.initialize();
 		while(!userInterface.isShutdownRequested())
