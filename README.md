@@ -1,5 +1,5 @@
 
-<img src="./imgui-platform-kit/resources/images/logo-bg.png" alt="logo">
+<img src="./imgui-platform-kit/resources/images/logo-bg.png" alt="logo" length="400" width="400">
 
 
 imgui-platform-kit - Cross-platform toolkit for Dear ImGui.
