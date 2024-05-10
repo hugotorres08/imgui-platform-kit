@@ -50,6 +50,7 @@ set(common_header
     "include/log_window.h"
     "include/stb_image.h"
     "include/user_interface.h"
+    "include/colour_palette.h"
 )
 if(WIN32)
 set(platform_header

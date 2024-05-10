@@ -50,11 +50,11 @@ int main(int argc, char* argv[])
 		userInterface.addWindow<LogWindow>();
 		//userInterface.addWindow<SomeOtherWindow>(arg1, arg2, arg3);
 
-		LogWindow::addLog("[INFO] User interface initialized.");
-		LogWindow::addLog("[DEBUG] Debug message.");
-		LogWindow::addLog("[WARNING] Warning message.");
-		LogWindow::addLog("[ERROR] Error message.");
-		LogWindow::addLog("[FATAL] Fatal error message.");
+		LogWindow::addLog(colours::Green,"[DEBUG] Debug message.");
+		LogWindow::addLog(colours::White,"[INFO] User  interface initialized.");
+		LogWindow::addLog(colours::Yellow,"[WARNING] Warning message.");
+		LogWindow::addLog(colours::Red,"[ERROR] Error message.");
+		LogWindow::addLog(colours::Red,"[FATAL] Fatal error message.");
 
 		userInterface.initialize();
 		while(!userInterface.isShutdownRequested())

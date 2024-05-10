@@ -1,34 +1,37 @@
+
 #pragma once
 
-#include <cstring>
-
+#include <vector>
+#include <string>
+#include <stdarg.h>   
+#include "imgui.h"
+#include "colour_palette.h"
 #include "user_interface_window.h"
 
 namespace imgui_kit
 {
-	class LogWindow : public UserInterfaceWindow
+    struct LogEntry
 	{
-	private:
-		inline static ImGuiTextBuffer	buffer;
-		inline static ImGuiTextFilter	filter;
-		inline static ImVector<int>		lineOffsets; // Index to lines offset. We maintain this with AddLog() calls.
-		inline static ImVec4			textColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);  // Default to white
-		inline static bool				autoScroll = true;  // Keep scrolling if already at the bottom.
-		inline static std::string		windowTitle;
-		inline static bool 				isWindowActive = false;
-	public:
-		LogWindow();
-		static void addLog(const char* message, ...) IM_FMTARGS(3);
+        std::string message;
+        ImVec4 color;
+    };
 
-		void render() override;
+    class LogWindow : public UserInterfaceWindow
+	{
+    private:
+        inline static std::vector<LogEntry> logs;
+        inline static ImGuiTextFilter filter;
+        inline static bool autoScroll = true;
+        inline static bool isWindowActive = false;
 
-		static bool isActive();
-
-		~LogWindow() override = default;
-	private:
-		static void clean();
-		static void draw();
-		static void getLogColor(const char* line_start);
-		static void drawLog();
-	};
+    public:
+        LogWindow();
+        static void addLog(const ImVec4& color, const char* fmt, ...) IM_FMTARGS(3);
+        void render() override { draw(); }
+        static bool isActive() { return isWindowActive;}
+        ~LogWindow() override = default;
+    private:
+        static void clean() { logs.clear(); }
+        static void draw();
+    };
 }
