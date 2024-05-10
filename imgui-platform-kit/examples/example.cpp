@@ -7,12 +7,6 @@
 #include <filesystem>
 #include <iostream>
 
-//#if defined(_WIN32)
-//#include "win32/user_interface.h"
-//#elif defined(__linux__)
-//#include "linux/user_interface.h"
-//#endif
-
 #include "user_interface.h"
 #include "template_window.h"
 #include "log_window.h"
@@ -30,10 +24,14 @@ int main(int argc, char* argv[])
 
 		// You can use the following parameters to customize the user interface
 		const WindowParameters windowParameters("Hello, World!");
-		const FontParameters fontParameters("../../resources/fonts/Lexend-Light.ttf", 22);
+		const FontParameters fontParameters("../resources/fonts/Lexend-Light.ttf", 24);
 		const StyleParameters styleParameters(ImVec4(0.2f, 0.2f, 0.2f, 0.8f));
-		const IconParameters iconParameters("../../resources/icons/icon.ico");
-		const BackgroundImageParameters backgroundImageParameters("../../resources/images/logo-bg.png",
+		#ifdef _WIN32
+		const IconParameters iconParameters("../resources/icons/icon.ico");
+		#elif __linux__
+		const IconParameters iconParameters("../resources/icons/icon.png");
+		#endif
+		const BackgroundImageParameters backgroundImageParameters("../resources/images/logo-bg.png",
 			0.7);
 
 		const UserInterfaceParameters parameters(windowParameters, 

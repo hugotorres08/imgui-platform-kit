@@ -1,8 +1,8 @@
 ﻿cmake_minimum_required(VERSION 3.15)
 
 project(imgui-platform-kit
-        DESCRIPTION "Cross-platform toolkit for Dear ImGui"
-        LANGUAGES CXX)
+    DESCRIPTION "Cross-platform toolkit for Dear ImGui"
+    LANGUAGES CXX)
 
 # Define library version
 set(IMGUI_PLATFORM_KIT_VERSION_MAJOR 1 CACHE STRING "major version" FORCE)
@@ -11,6 +11,7 @@ set(IMGUI_PLATFORM_KIT_VERSION ${IMGUI_PLATFORM_KIT_VERSION_MAJOR}.${IMGUI_PLATF
 
 # Library build type prefix
 set(IMGUI_PLATFORM_KIT_LIB_PREFIX "release")
+
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(IMGUI_PLATFORM_KIT_LIB_PREFIX "debug")
 endif()
@@ -32,6 +33,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 if(NOT DEFINED ENV{VCPKG_ROOT})
     message(FATAL_ERROR "ERROR: This project requires VCPKG.\n")
 endif()
+
 set(VCPKG_ROOT $ENV{VCPKG_ROOT})
 include(${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake)
 
@@ -52,15 +54,17 @@ set(common_header
     "include/user_interface.h"
     "include/colour_palette.h"
 )
+
 if(WIN32)
-set(platform_header
-    "include/win32/win32_dx12_user_interface.h"
-)
+    set(platform_header
+        "include/win32/win32_dx12_user_interface.h"
+    )
 elseif(UNIX AND NOT APPLE)
-set(platform_header
-	"include/linux/user_interface.h"
-)
+    set(platform_header
+        "include/linux/glfw_opengl3_user_interface.h"
+    )
 endif()
+
 set(header ${common_header} ${platform_header})
 
 set(common_src
@@ -69,28 +73,30 @@ set(common_src
     "src/template_window.cpp"
     "src/log_window.cpp"
 )
+
 if(WIN32)
-set(platform_src
-    "src/win32/win32_dx12_user_interface.cpp"
-)
+    set(platform_src
+        "src/win32/win32_dx12_user_interface.cpp"
+    )
 elseif(UNIX AND NOT APPLE)
-set(platform_src
-	"src/linux/glfw_opengl3_user_interface.cpp"
-)
+    set(platform_src
+        "src/linux/glfw_opengl3_user_interface.cpp"
+    )
 endif()
+
 set(src ${common_src} ${platform_src})
 
 # Library target definition
 add_library(${CMAKE_PROJECT_NAME} ${header} ${src})
-target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC 
+target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:${IMGUI_PLATFORM_KIT_INC_INSTALL_DIR}> 
+    $<INSTALL_INTERFACE:${IMGUI_PLATFORM_KIT_INC_INSTALL_DIR}>
 )
 
 if(WIN32)
-	# Setup imgui - win32 Directx12
-	find_package(imgui CONFIG REQUIRED)
-	target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE imgui::imgui "d3d12.lib" "dxgi.lib" "d3dcompiler.lib")
+    # Setup imgui - win32 Directx12
+    find_package(imgui CONFIG REQUIRED)
+    target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE imgui::imgui "d3d12.lib" "dxgi.lib" "d3dcompiler.lib")
 elseif(UNIX AND NOT APPLE)
     # Setup GLFW and OpenGL
     find_package(glfw3 REQUIRED)
@@ -105,7 +111,6 @@ endif()
 find_package(implot CONFIG REQUIRED)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE implot::implot)
 
-
 target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC
     IMGUI_PLATFORM_KIT=1
     IMGUI_PLATFORM_KIT_VERSION_MAJOR=${IMGUI_PLATFORM_KIT_VERSION_MAJOR}
@@ -119,16 +124,16 @@ set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES
 
 # Install the library (binaries)
 install(TARGETS ${CMAKE_PROJECT_NAME} EXPORT ${CMAKE_PROJECT_NAME}Targets
-    RUNTIME       DESTINATION ${IMGUI_PLATFORM_KIT_RUNTIME_INSTALL_DIR}
-    LIBRARY       DESTINATION ${IMGUI_PLATFORM_KIT_LIBRARY_INSTALL_DIR}
-    ARCHIVE       DESTINATION ${IMGUI_PLATFORM_KIT_ARCHIVE_INSTALL_DIR}
-    FRAMEWORK     DESTINATION ${IMGUI_PLATFORM_KIT_FRAMEWORK_INSTALL_DIR}
+    RUNTIME DESTINATION ${IMGUI_PLATFORM_KIT_RUNTIME_INSTALL_DIR}
+    LIBRARY DESTINATION ${IMGUI_PLATFORM_KIT_LIBRARY_INSTALL_DIR}
+    ARCHIVE DESTINATION ${IMGUI_PLATFORM_KIT_ARCHIVE_INSTALL_DIR}
+    FRAMEWORK DESTINATION ${IMGUI_PLATFORM_KIT_FRAMEWORK_INSTALL_DIR}
 )
 
 # Install the headers
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
-        DESTINATION ${IMGUI_PLATFORM_KIT_INC_INSTALL_DIR}/imgui-platform-kit
-        FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp")
+    DESTINATION ${IMGUI_PLATFORM_KIT_INC_INSTALL_DIR}/imgui-platform-kit
+    FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp")
 
 # Package version configuration
 include(CMakePackageConfigHelpers)
