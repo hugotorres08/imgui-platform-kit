@@ -82,6 +82,15 @@ namespace imgui_kit
 		textColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 
+	StyleParameters::StyleParameters(ImVec4 themeColor, ImVec4 bgColor)
+		: themeColor(themeColor), windowBgColor(bgColor)
+	{
+		windowRounding = 5.0f;
+		windowPadding = ImVec2(8.0f, 8.0f);
+		transparency = 1.0f;
+		textColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+	}
+
 	void StyleParameters::apply() const
 	{
 		ImGuiStyle& style = ImGui::GetStyle();

@@ -35,15 +35,16 @@ namespace imgui_kit
 
 	struct StyleParameters
 	{
+		ImVec4 themeColor;
 		ImVec4 windowBgColor;
 		ImVec2 windowPadding;
 		float windowRounding;
 		float transparency;
 		ImVec4 textColor;
-		ImVec4 themeColor;
 
 		StyleParameters();
 		StyleParameters(ImVec4 themeColor);
+		StyleParameters(ImVec4 themeColor, ImVec4 bgColor);
 
 		void apply() const;
 	};

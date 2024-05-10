@@ -123,12 +123,12 @@ namespace imgui_kit
 			g_pd3dCommandList->ResourceBarrier(1, &barrier);
 
 			// Render Dear ImGui graphics
-			const float clear_color_with_alpha[4] = 
-            { parameters.styleParameters.windowBgColor.x * parameters.styleParameters.windowBgColor.w,
-				parameters.styleParameters.windowBgColor.y * parameters.styleParameters.windowBgColor.w,
-				parameters.styleParameters.windowBgColor.z * parameters.styleParameters.windowBgColor.w,
-				parameters.styleParameters.windowBgColor.w };
-			g_pd3dCommandList->ClearRenderTargetView(g_mainRenderTargetDescriptor[backBufferIdx], clear_color_with_alpha, 0, nullptr);
+        	const float bgColor[4] =
+                { parameters.styleParameters.windowBgColor.x * parameters.styleParameters.windowBgColor.w,
+                    parameters.styleParameters.windowBgColor.y * parameters.styleParameters.windowBgColor.w,
+                    parameters.styleParameters.windowBgColor.z * parameters.styleParameters.windowBgColor.w,
+                    parameters.styleParameters.windowBgColor.w };
+        	g_pd3dCommandList->ClearRenderTargetView(g_mainRenderTargetDescriptor[backBufferIdx], bgColor, 0, nullptr);
 			g_pd3dCommandList->OMSetRenderTargets(1, &g_mainRenderTargetDescriptor[backBufferIdx], FALSE, nullptr);
 			g_pd3dCommandList->SetDescriptorHeaps(1, &g_pd3dSrvDescHeap);
 			ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), g_pd3dCommandList);
