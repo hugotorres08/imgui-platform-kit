@@ -84,11 +84,13 @@ namespace imgui_kit
         void renderWindows() const;
         void renderBackgroundImage() const;
         void updateLastRenderedFrameDimensions();
+        void updateFontGlobalScale();
     };
 
 }
 
 // Forward declarations of helper functions
 bool LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_width, int* out_height);
-
+float GetDpiScale(GLFWwindow* window);
+GLFWmonitor* GetActiveMonitor(GLFWwindow* window);
 #endif
