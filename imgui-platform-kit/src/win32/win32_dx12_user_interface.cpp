@@ -139,7 +139,6 @@ namespace imgui_kit
 
 
             const ImGuiIO& io_ref = ImGui::GetIO(); (void)io_ref;
-
 			// Update and Render additional Platform Windows
 			if (io_ref.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 			{
@@ -155,20 +154,7 @@ namespace imgui_kit
 			g_fenceLastSignaledValue = fenceValue;
 			frameCtx->FenceValue = fenceValue;
 
-            // Update the last known window size and position
-            RECT rect;
-            if (GetWindowRect(windowHandle, &rect))
-            {
-                parameters.windowParameters.width = rect.right - rect.left;
-                parameters.windowParameters.height = rect.bottom - rect.top;
-                parameters.windowParameters.startPosX = rect.left;
-                parameters.windowParameters.startPosY = rect.top;
-            }
-            else
-            {
-                const DWORD error = GetLastError();
-                std::cerr << "GetWindowRect failed with error: " << error << std::endl;
-            }
+            updateLastRenderedFrameDimensions();
 		}
 
 		void UserInterface::shutdown()
@@ -311,6 +297,22 @@ namespace imgui_kit
                 pos, ImVec2(pos.x + imageSize.x, pos.y + imageSize.y));
         }
 
+		void UserInterface::updateLastRenderedFrameDimensions()
+		{
+            RECT rect;
+            if (GetWindowRect(windowHandle, &rect))
+            {
+                parameters.windowParameters.width = rect.right - rect.left;
+                parameters.windowParameters.height = rect.bottom - rect.top;
+                parameters.windowParameters.startPosX = rect.left;
+                parameters.windowParameters.startPosY = rect.top;
+            }
+            else
+            {
+                const DWORD error = GetLastError();
+                std::cerr << "GetWindowRect failed with error: " << error << std::endl;
+            }
+		}
 }
 
 // Helper functions
@@ -731,6 +733,7 @@ std::wstring StringToWString(const std::string& str) {
     return wstr;
 }
 
+// Helper function to get the DPI scale of a window
 float GetDpiScale(HWND hWnd)
 {
 	const UINT dpi = GetDpiForWindow(hWnd);

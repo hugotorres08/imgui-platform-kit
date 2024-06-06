@@ -83,6 +83,7 @@ namespace imgui_kit
         void loadBackgroundImage();
         void renderWindows() const;
         void renderBackgroundImage() const;
+        void updateLastRenderedFrameDimensions();
     };
 
 }
