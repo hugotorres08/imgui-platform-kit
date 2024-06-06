@@ -27,7 +27,6 @@
 #pragma comment(lib, "dxguid.lib")
 #endif
 
-
 #include "user_interface_parameters.h"
 #include "user_interface_window.h"
 

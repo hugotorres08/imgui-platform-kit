@@ -8,5 +8,7 @@ namespace imgui_kit
 		ImGui::Text("This is some useful text.");
 		ImGui::Button("Button");
 		ImGui::End();
+
+		ImGui::ShowDemoWindow();
 	}
 }

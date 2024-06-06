@@ -1,9 +1,6 @@
 
 #if defined(_WIN32)
 
-#include <ShellScalingApi.h> // Include for DPI functions
-#pragma comment(lib, "Shcore.lib") // Link with Shcore.lib for DPI functions
-
 #include "user_interface.h"
 
 #define STB_IMAGE_IMPLEMENTATION
