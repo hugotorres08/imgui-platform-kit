@@ -2,9 +2,10 @@
 
 namespace imgui_kit
 {
-	WindowParameters::WindowParameters(std::string title, int width, int height)
-		: title(std::move(title)), width(width), height(height)
+	WindowParameters::WindowParameters(std::string title, int width, int height, int startPosX, int startPosY)
+		: title(std::move(title)), width(width), height(height), startPosX(startPosX), startPosY(startPosY)
 	{
+		load();
 #if defined(_WIN32)
 		if (this->width <= 0 || this->height <= 0)
 		{
@@ -52,6 +53,48 @@ namespace imgui_kit
 			throw std::invalid_argument("Width must be greater than 0.");
 		if (this->height <= 0)  
 			throw std::invalid_argument("Height must be greater than 0.");
+	}
+
+	void WindowParameters::save(const std::string& filename) const
+	{
+		std::ofstream file(filename);
+		if (!file.is_open())
+			throw std::runtime_error("Could not open file for writing.");
+
+		file << "[Window Parameters]\n";
+		file << "Title=" << title << "\n";
+		file << "Width=" << width << "\n";
+		file << "Height=" << height << "\n";
+		file << "StartPosX=" << startPosX << "\n";
+		file << "StartPosY=" << startPosY << "\n";
+
+		file.close();
+		if (file.fail())
+			throw std::runtime_error("Failed to save window parameters.");
+	}
+
+	void WindowParameters::load(const std::string& filename)
+	{
+		std::ifstream file(filename);
+		if (!file.is_open())
+			return; // If the file does not exist, skip loading
+
+		std::string line;
+		while (std::getline(file, line))
+		{
+			if (line.find("Title=") == 0)
+				title = line.substr(6);
+			else if (line.find("Width=") == 0)
+				width = std::stoi(line.substr(6));
+			else if (line.find("Height=") == 0)
+				height = std::stoi(line.substr(7));
+			else if (line.find("StartPosX=") == 0)
+				startPosX = std::stoi(line.substr(10));
+			else if (line.find("StartPosY=") == 0)
+				startPosY = std::stoi(line.substr(10));
+		}
+
+		file.close();
 	}
 
 	FontParameters::FontParameters(std::string path, int size)
@@ -152,10 +195,8 @@ namespace imgui_kit
 	{}
 
 	BackgroundImageParameters::BackgroundImageParameters(std::string path, double scale)
-		: path(std::move(path)), scale(scale)
+		: path(std::move(path))
 	{
-		if (scale <= 0)
-			throw std::invalid_argument("Scale must be greater than 0.");
 		width = 0;
 		height = 0;
 	}
@@ -171,4 +212,9 @@ namespace imgui_kit
 				iconParameters(std::move(iconParameters)),
 				backgroundImageParameters(std::move(bgImgParameters))
 	{}
+
+	void UserInterfaceParameters::save(const std::string& filename) const
+	{
+		windowParameters.save(filename);
+	}
 }

@@ -65,6 +65,8 @@ namespace imgui_kit
         window = glfwCreateWindow(parameters.windowParameters.width, 
         parameters.windowParameters.height, 
         parameters.windowParameters.title.c_str(), nullptr, nullptr);
+        glfwSetWindowPos(window, parameters.windowParameters.startPosX, 
+            parameters.windowParameters.startPosY);
         if (window == nullptr)
             return;
         glfwMakeContextCurrent(window);
@@ -143,10 +145,25 @@ namespace imgui_kit
         }
 
         glfwSwapBuffers(window);
+
+        // Update the last known window parameters
+        if (window != nullptr)
+        {
+            int width, height, posX, posY;
+            glfwGetWindowSize(window, &width, &height);
+            glfwGetWindowPos(window, &posX, &posY);
+            parameters.windowParameters.width = width;
+            parameters.windowParameters.height = height;
+            parameters.windowParameters.startPosX = posX;
+            parameters.windowParameters.startPosY = posY;
+        }
+        else
+            std::cerr << "Invalid GLFW window." << std::endl;
     }
 
     void UserInterface::shutdown()
     {
+        parameters.save();
         ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplGlfw_Shutdown();
         ImGui::DestroyContext();
@@ -227,8 +244,10 @@ namespace imgui_kit
         const ImVec2 windowSize = viewport->Size; // This is the size of the area we can draw in
 
         // Calculate the image's dimensions
-        static const ImVec2 imageSize = ImVec2((float)backgroundImageTexture.parameters.width * (float)backgroundImageTexture.parameters.scale,
-            (float)backgroundImageTexture.parameters.height * (float)backgroundImageTexture.parameters.scale);
+        static const ImVec2 imageSize = ImVec2(
+            (float)backgroundImageTexture.parameters.width * (float)backgroundImageTexture.parameters.scale * (float)parameters.scale,
+            (float)backgroundImageTexture.parameters.height * (float)backgroundImageTexture.parameters.scale * (float)parameters.scale);
+
 
         // Calculate the top-left position to center the image in the viewport
         const ImVec2 pos = ImVec2(viewport->Pos.x + (windowSize.x - imageSize.x) * 0.5f,

@@ -24,8 +24,8 @@ int main(int argc, char* argv[])
 
 		// You can use the following parameters to customize the user interface
 		const WindowParameters windowParameters("Hello, World!");
-		const FontParameters fontParameters("../../resources/fonts/Lexend-Light.ttf", 24);
-		const StyleParameters styleParameters(ImVec4(0.2f, 0.2f, 0.2f, 0.8f), ImVec4(0.2f, 0.2f, 0.2f, 1.0f));
+		const FontParameters fontParameters("../../resources/fonts/Lexend-Light.ttf", 18);
+		const StyleParameters styleParameters(ImVec4(0.2f, 0.2f, 0.2f, 0.5f), ImVec4(0.2f, 0.2f, 0.2f, 1.0f));
 		#ifdef _WIN32
 		const IconParameters iconParameters("../../resources/icons/icon.ico");
 		#elif __linux__

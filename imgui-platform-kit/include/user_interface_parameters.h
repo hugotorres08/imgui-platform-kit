@@ -3,6 +3,9 @@
 #include <algorithm>
 #include <stdexcept>
 #include <iostream>
+#include <string>
+#include <fstream>
+#include <sstream>
 
 #if defined(_WIN32)
 #include <Windows.h>
@@ -14,13 +17,19 @@
 
 namespace imgui_kit
 {
+	constexpr char defaultWindowParametersFilename[] = "imgui_window_parameters.ini";
+
 	struct WindowParameters
 	{
 		std::string title;
 		int width;
 		int height;
+		int startPosX;
+		int startPosY;
 
-		WindowParameters(std::string title = "default title", int width = -1, int height = -1);
+		WindowParameters(std::string title = "default title", int width = -1, int height = -1, int startPosX = 0, int startPosY = 0);
+		void save(const std::string& filename = defaultWindowParametersFilename) const;
+		void load(const std::string& filename = defaultWindowParametersFilename);
 	};
 
 	struct FontParameters
@@ -61,7 +70,6 @@ namespace imgui_kit
 	struct BackgroundImageParameters
 	{
 		std::string path;
-		double scale;
 		int width;
 		int height;
 
@@ -81,5 +89,6 @@ namespace imgui_kit
 			const StyleParameters& styleParameters = {},
 			IconParameters iconParameters = {},
 			BackgroundImageParameters bgImgParameters ={}) ;
+		void save(const std::string& filename = defaultWindowParametersFilename) const;
 	};
 }
