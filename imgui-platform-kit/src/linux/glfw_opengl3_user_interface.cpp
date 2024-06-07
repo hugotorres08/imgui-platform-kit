@@ -233,26 +233,47 @@ namespace imgui_kit
         // Use the viewport's size to determine how to center the image
         const ImVec2 windowSize = viewport->Size; // This is the size of the area we can draw in
 
-        const float dpiScale = GetDpiScale(window);
+        const float dpiScale = GetDpiScale(windowHandle);
 
         // Original image size scaled by DPI
         const ImVec2 originalImageSize = ImVec2(
             (float)backgroundImageTexture.parameters.width * dpiScale,
             (float)backgroundImageTexture.parameters.height * dpiScale);
 
-        // Scale the image to fit or fill the window size while maintaining the aspect ratio
+        // Calculate the aspect ratio of the image
         const float aspectRatio = originalImageSize.x / originalImageSize.y;
-        ImVec2 imageSize = originalImageSize;
 
-        if (windowSize.x / aspectRatio <= windowSize.y) // Fit to width
+        ImVec2 imageSize;
+        switch (parameters.backgroundImageParameters.fitType)
         {
-            imageSize.x = windowSize.x;
-            imageSize.y = windowSize.x / aspectRatio;
+        case ImageFitType::KEEP_ASPECT_RATIO:
+        {
+            if (windowSize.x / aspectRatio <= windowSize.y) // Fit to width
+            {
+                imageSize.x = windowSize.x;
+                imageSize.y = windowSize.x / aspectRatio;
+            }
+            else // Fit to height
+            {
+                imageSize.y = windowSize.y;
+                imageSize.x = windowSize.y * aspectRatio;
+            }
         }
-        else // Fit to height
+        break;
+        case ImageFitType::ZOOM_TO_FIT:
         {
-            imageSize.y = windowSize.y;
-            imageSize.x = windowSize.y * aspectRatio;
+            if (windowSize.x / aspectRatio > windowSize.y) // Cover height
+            {
+                imageSize.x = windowSize.x;
+                imageSize.y = windowSize.x / aspectRatio;
+            }
+            else // Cover width
+            {
+                imageSize.y = windowSize.y;
+                imageSize.x = windowSize.y * aspectRatio;
+            }
+        }
+        break;
         }
 
         // Calculate the top-left position to center the image in the viewport

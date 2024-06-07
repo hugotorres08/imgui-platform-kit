@@ -67,13 +67,20 @@ namespace imgui_kit
 		IconParameters(std::string path = "", int width = 0, int height = 0);
 	};
 
+	enum class ImageFitType : uint8_t
+	{
+		KEEP_ASPECT_RATIO = 0,
+		ZOOM_TO_FIT,
+	};
+
 	struct BackgroundImageParameters
 	{
 		std::string path;
+		ImageFitType fitType;
 		int width;
 		int height;
 
-		BackgroundImageParameters(std::string path = "", double scale = 1.0);
+		BackgroundImageParameters(std::string path = "", ImageFitType fitType = ImageFitType::KEEP_ASPECT_RATIO);
 	};
 
 	struct UserInterfaceParameters

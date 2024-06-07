@@ -194,12 +194,10 @@ namespace imgui_kit
 		: path(std::move(path)), width(width), height(height)
 	{}
 
-	BackgroundImageParameters::BackgroundImageParameters(std::string path, double scale)
-		: path(std::move(path))
-	{
-		width = 0;
-		height = 0;
-	}
+
+	BackgroundImageParameters::BackgroundImageParameters(std::string path, ImageFitType fitType)
+		: path(std::move(path)), fitType(fitType), width(0), height(0)
+	{}
 
 	UserInterfaceParameters::UserInterfaceParameters(WindowParameters windowParameters,
 		FontParameters fontParameters,

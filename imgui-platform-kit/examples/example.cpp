@@ -15,24 +15,20 @@ int main(int argc, char* argv[])
 {
 	try
 	{
-		std::cout << "Hello, World!" << std::endl;
-		std::cout << "Current working directory: "
-			<< std::filesystem::current_path()
-			<< std::endl;
-
 		using namespace imgui_kit;
 
 		// You can use the following parameters to customize the user interface
 		const WindowParameters windowParameters("Hello, World!");
-		const FontParameters fontParameters("../resources/fonts/Lexend-Light.ttf", 20);
-		const StyleParameters styleParameters(ImVec4(0.2f, 0.2f, 0.2f, 0.5f), ImVec4(0.2f, 0.2f, 0.2f, 1.0f));
+		const FontParameters fontParameters(std::string(PROJECT_DIR) + "/resources/fonts/Lexend-Light.ttf", 20);
+		constexpr ImVec4 themeColor = colours::DarkGray;
+		constexpr ImVec4 backgroundColor = colours::DarkGray;
+		const StyleParameters styleParameters(themeColor, backgroundColor);
 		#ifdef _WIN32
-		const IconParameters iconParameters("../../resources/icons/icon.ico");
+		const IconParameters iconParameters(std::string(PROJECT_DIR) + "/resources/icons/icon.ico");
 		#elif __linux__
-		const IconParameters iconParameters("../resources/icons/icon.png");
+		const IconParameters iconParameters(std::string(PROJECT_DIR) + "/resources/icons/icon.png");
 		#endif
-		const BackgroundImageParameters backgroundImageParameters("../resources/images/logo-bg.png",
-			0.7);
+		const BackgroundImageParameters backgroundImageParameters(std::string(PROJECT_DIR) + "/resources/images/logo-bg.png");
 
 		const UserInterfaceParameters parameters(windowParameters, 
 			fontParameters, 

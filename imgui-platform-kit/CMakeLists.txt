@@ -41,9 +41,6 @@ include(${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake)
 set(PROJECT_DIR "${CMAKE_SOURCE_DIR}")
 add_compile_definitions(PROJECT_DIR="${PROJECT_DIR}")
 
-set(OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/data")
-add_compile_definitions(OUTPUT_DIRECTORY="${OUTPUT_DIRECTORY}")
-
 # Header and source files
 set(common_header
     "include/user_interface_window.h"
