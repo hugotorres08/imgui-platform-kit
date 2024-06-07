@@ -315,8 +315,6 @@ namespace imgui_kit
                 pos, ImVec2(pos.x + imageSize.x, pos.y + imageSize.y));
         }
 
-
-
 		void UserInterface::updateLastRenderedFrameDimensions()
 		{
             RECT rect;
