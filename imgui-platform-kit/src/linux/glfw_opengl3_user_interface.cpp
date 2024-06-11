@@ -152,6 +152,7 @@ namespace imgui_kit
     void UserInterface::shutdown()
     {
         parameters.save();
+        ImNodeEditor::DestroyEditor(ImNodeEditor::GetCurrentEditor());
         ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplGlfw_Shutdown();
         ImGui::DestroyContext();

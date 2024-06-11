@@ -55,6 +55,7 @@ namespace imgui_kit
 			IMGUI_CHECKVERSION();
 			ImGui::CreateContext();
 			ImPlot::CreateContext();
+
 			ImGuiIO& io_ref = ImGui::GetIO(); (void)io_ref;
 			io_ref.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 			io_ref.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
@@ -162,6 +163,7 @@ namespace imgui_kit
             backgroundImageTexture.release();
 
 			// Cleanup
+            ImNodeEditor::DestroyEditor(ImNodeEditor::GetCurrentEditor());
 			ImGui_ImplDX12_Shutdown();
 			ImGui_ImplWin32_Shutdown();
 			ImGui::DestroyContext();

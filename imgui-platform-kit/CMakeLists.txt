@@ -108,6 +108,10 @@ endif()
 find_package(implot CONFIG REQUIRED)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE implot::implot)
 
+# Setup imgui-node-editor
+find_package(unofficial-imgui-node-editor CONFIG REQUIRED)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE unofficial::imgui-node-editor::imgui-node-editor)
+
 target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC
     IMGUI_PLATFORM_KIT=1
     IMGUI_PLATFORM_KIT_VERSION_MAJOR=${IMGUI_PLATFORM_KIT_VERSION_MAJOR}

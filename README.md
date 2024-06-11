@@ -7,7 +7,7 @@ imgui-platform-kit - Cross-platform toolkit for Dear ImGui.
 
 
 ## Description
-ImGui Platform Kit is a cross-platform toolkit designed to facilitate the development of user interfaces using Dear ImGui and ImPlot, integrated with DirectX 12 for Windows or integrated with GLFW, OpenGL3 for Linux. This toolkit provides a comprehensive set of tools for creating customizable graphical interfaces, logging windows, and interactive plots, making it suitable for applications that require dynamic and visually appealing UI elements.
+**ImGui Platform Kit** is a cross-platform toolkit designed to facilitate the development of user interfaces using **Dear ImGui**, **ImPlot**, and **imgui-node-editor** integrated with DirectX 12 for Windows or integrated with GLFW, OpenGL3 for Linux. This toolkit provides a comprehensive set of tools for creating customizable graphical interfaces, logging windows, and interactive plots, making it suitable for applications that require dynamic and visually appealing UI elements.
 
 ## Common dependencies
 - **C++20**: Compatible with modern C++ standards for optimal performance and functionality.
@@ -15,6 +15,7 @@ ImGui Platform Kit is a cross-platform toolkit designed to facilitate the develo
 - **VCPKG**: To manage C++ libraries on Windows, ensuring easy integration of ImGui and ImPlot.
 - **Dear ImGui**: Used for the base GUI components (installed automatically when running ```build.bat``` on Windows or ```build.sh``` on Linux).
 - **ImPlot**: Provides plotting capabilities within ImGui interfaces (installed automatically when running ```build.bat``` on Windows or ```build.sh``` on Linux).
+- **imgui-node-editor**: Provides the capability of creating node-based graphs (installed automatically when running ```build.bat``` on Windows or ```build.sh``` on Linux).
 - **STB Image**: For image loading and texture handling (already included in project).
 
 ## Windows specific dependencies
@@ -31,6 +32,7 @@ ImGui Platform Kit is a cross-platform toolkit designed to facilitate the develo
 - **Background Image Handling**: Support for scalable background images in UI windows.
 - **Screen Resolution Flexibility**: Automatically adjusts to the primary monitor's resolution if specific dimensions are not provided.
 - **Plotting Integration**: Leverage ImPlot for integrated plotting capabilities within the ImGui interface.
+- **Node-based Graph Editing**: Implement node-based graphs using the imgui-node-editor library.
 
 ## Getting started
 

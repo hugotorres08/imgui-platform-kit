@@ -18,6 +18,9 @@
 #include "implot.h"
 #include "implot_internal.h"
 
+#include <imgui-node-editor/imgui_node_editor.h>
+
+
 #ifdef _DEBUG
 #define DX12_ENABLE_DEBUG_LAYER
 #endif
