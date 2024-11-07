@@ -40,11 +40,12 @@ namespace imgui_kit
                 parameters.windowParameters.height, nullptr, nullptr, windowClass.hInstance, nullptr);
 
 			// Initialize Direct3D
+            shutdownRequest = false;
 			if (!CreateDeviceD3D(windowHandle))
 			{
 				CleanupDeviceD3D();
 				::UnregisterClassW(windowClass.lpszClassName, windowClass.hInstance);
-                shutdownRequest = true;
+                //shutdownRequest = true;
 			}
 
 			// Show the window
@@ -83,6 +84,7 @@ namespace imgui_kit
 			// Poll and handle messages (inputs, window resize, etc.)
 		   // See the WndProc() function below for our to dispatch events to the Win32 backend.
 			MSG msg;
+            shutdownRequest = false;
 			while (::PeekMessage(&msg, nullptr, 0U, 0U, PM_REMOVE))
 			{
 				::TranslateMessage(&msg);
