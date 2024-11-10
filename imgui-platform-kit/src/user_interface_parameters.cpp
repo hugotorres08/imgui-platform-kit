@@ -188,6 +188,24 @@ namespace imgui_kit
 		style.Colors[ImGuiCol_Tab] = dark;
 		style.Colors[ImGuiCol_TabHovered] = highlight;
 		style.Colors[ImGuiCol_TabActive] = darker;
+		style.Colors[ImGuiCol_Border] = ImVec4(dark.x, dark.y, dark.z, 0.6f);  // Muted border
+		style.Colors[ImGuiCol_MenuBarBg] = dark;                               // Menu bar background
+		style.Colors[ImGuiCol_ScrollbarBg] = darker;                           // Scrollbar background
+		style.Colors[ImGuiCol_ScrollbarGrab] = dark;                           // Scrollbar grab
+		style.Colors[ImGuiCol_ScrollbarGrabHovered] = highlight;               // Scrollbar grab hover
+		style.Colors[ImGuiCol_ScrollbarGrabActive] = darker;                   // Scrollbar grab active
+		style.Colors[ImGuiCol_CheckMark] = ImVec4(light.x * 1.1f, light.y * 1.3f, light.z * 1.5f, 1.0f); // Accent checkmark
+		style.Colors[ImGuiCol_SliderGrab] = light;
+		style.Colors[ImGuiCol_SliderGrabActive] = lighter;
+		style.Colors[ImGuiCol_TableHeaderBg] = dark;
+		style.Colors[ImGuiCol_TableBorderStrong] = ImVec4(dark.x * 0.9f, dark.y * 0.9f, dark.z * 0.9f, 1.0f); // Strong border
+		style.Colors[ImGuiCol_TableBorderLight] = dark;
+		style.Colors[ImGuiCol_TableRowBg] = ImVec4(base.x * 0.8f, base.y * 0.8f, base.z * 0.8f, 1.0f);       // Table row background
+		style.Colors[ImGuiCol_TableRowBgAlt] = ImVec4(base.x * 0.7f, base.y * 0.7f, base.z * 0.7f, 1.0f);    // Alternate table row background
+		style.Colors[ImGuiCol_NavHighlight] = ImVec4(highlight.x * 1.1f, highlight.y * 1.1f, highlight.z * 1.1f, 1.0f);
+		style.Colors[ImGuiCol_NavWindowingHighlight] = ImVec4(0.7f, 0.85f, 1.0f, 0.8f);
+		style.Colors[ImGuiCol_NavWindowingDimBg] = ImVec4(0.1f, 0.1f, 0.1f, 0.75f);
+		style.Colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.1f, 0.1f, 0.1f, 0.75f);
 	}
 
 	IconParameters::IconParameters(std::string path, int width, int height)
@@ -216,3 +234,6 @@ namespace imgui_kit
 		windowParameters.save(filename);
 	}
 }
+
+
+  
