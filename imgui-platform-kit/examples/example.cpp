@@ -10,6 +10,7 @@
 #include "user_interface.h"
 #include "template_window.h"
 #include "log_window.h"
+#include "theme_window.h"
 
 int main(int argc, char* argv[])
 {
@@ -18,11 +19,12 @@ int main(int argc, char* argv[])
 		using namespace imgui_kit;
 
 		// You can use the following parameters to customize the user interface
-		const WindowParameters windowParameters("Hello, World!");
-		const FontParameters fontParameters(std::string(PROJECT_DIR) + "/resources/fonts/Lexend-Light.ttf", 20);
-		constexpr ImVec4 themeColor = colours::DarkGray;
+		const WindowParameters windowParameters("imgui-platform-kit!");
+		const FontParameters fontParameters({	{std::string(PROJECT_DIR) + "/resources/fonts/Lexend-Light.ttf", 20},
+												{std::string(PROJECT_DIR) + "/resources/fonts/Lexend-Regular.ttf", 20},
+												{std::string(PROJECT_DIR) + "/resources/fonts/Lexend-Bold.ttf", 20} });
 		constexpr ImVec4 backgroundColor = colours::DarkGray;
-		const StyleParameters styleParameters(themeColor, backgroundColor);
+		const StyleParameters styleParameters(Theme::Moonlight, backgroundColor);
 		#ifdef _WIN32
 		const IconParameters iconParameters(std::string(PROJECT_DIR) + "/resources/icons/icon.ico");
 		#elif __linux__
@@ -42,6 +44,7 @@ int main(int argc, char* argv[])
 
 		userInterface.addWindow<TemplateWindow>();
 		userInterface.addWindow<LogWindow>();
+		userInterface.addWindow<ThemeWindow>();
 		//userInterface.addWindow<SomeOtherWindow>(arg1, arg2, arg3);
 
 		LogWindow::addLog(colours::Green,"[DEBUG] Debug message.");

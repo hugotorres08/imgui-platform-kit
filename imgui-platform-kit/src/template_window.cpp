@@ -10,6 +10,7 @@ namespace imgui_kit
 		ImGui::End();
 
 		ImGui::ShowDemoWindow();
+		ImGui::ShowStyleEditor();
 		ImPlot::ShowDemoWindow();
 	}
 }

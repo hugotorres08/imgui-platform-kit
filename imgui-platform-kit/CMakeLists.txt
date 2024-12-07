@@ -50,6 +50,8 @@ set(common_header
     "include/stb_image.h"
     "include/user_interface.h"
     "include/colour_palette.h"
+    "include/themes.h"
+    "include/theme_window.h"
 )
 
 if(WIN32)
@@ -69,6 +71,8 @@ set(common_src
     "src/user_interface_parameters.cpp"
     "src/template_window.cpp"
     "src/log_window.cpp"
+    "src/themes.cpp"
+    "src/theme_window.cpp"
 )
 
 if(WIN32)

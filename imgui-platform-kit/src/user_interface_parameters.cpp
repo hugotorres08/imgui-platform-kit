@@ -1,4 +1,7 @@
 #include "user_interface_parameters.h"
+#include "user_interface_parameters.h"
+
+#include "colour_palette.h"
 
 namespace imgui_kit
 {
@@ -98,35 +101,51 @@ namespace imgui_kit
 	}
 
 	FontParameters::FontParameters(std::string path, int size)
-		: path(std::move(path))
-		, size(size)
 	{
+		pathsAndSizes = { {std::move(path), size} };
 		if (size <= 0)
 			throw std::invalid_argument("Size must be greater than 0.");
 	}
 
+	FontParameters::FontParameters(const std::vector<std::pair<std::string, int>>& pathsAndSizes)
+		: pathsAndSizes(pathsAndSizes)
+	{
+		for (const auto& pathAndSize : pathsAndSizes)
+		{
+			const auto& [path, size] = pathAndSize;
+			if (size <= 0)
+			{
+				throw std::invalid_argument("Font size must be greater than 0.");
+			}
+			if (path.empty())
+			{
+				throw std::invalid_argument("Font path cannot be empty.");
+			}
+		}
+	}
+
 	StyleParameters::StyleParameters()
-		: themeColor(defaultThemeColor)
+		: theme(Theme::Dark)
 	{
-		windowBgColor = ImVec4(themeColor.x * 0.8f, themeColor.y * 0.8f, themeColor.z * 0.8f, themeColor.w);
+		windowBgColor = colours::DarkGray;
 		windowRounding = 5.0f;
 		windowPadding = ImVec2(8.0f, 8.0f);
 		transparency = 1.0f;
 		textColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 
-	StyleParameters::StyleParameters(ImVec4 themeColor)
-		: themeColor(themeColor)
+	StyleParameters::StyleParameters(Theme theme)
+		: theme(theme)
 	{
-		windowBgColor = ImVec4(themeColor.x * 0.8f, themeColor.y * 0.8f, themeColor.z * 0.8f, themeColor.w);
+		windowBgColor = colours::DarkGray;
 		windowRounding = 5.0f;
 		windowPadding = ImVec2(8.0f, 8.0f);
 		transparency = 1.0f;
 		textColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 
-	StyleParameters::StyleParameters(ImVec4 themeColor, ImVec4 bgColor)
-		: themeColor(themeColor), windowBgColor(bgColor)
+	StyleParameters::StyleParameters(Theme theme, ImVec4 bgColor)
+		: theme(theme), windowBgColor(bgColor)
 	{
 		windowRounding = 5.0f;
 		windowPadding = ImVec2(8.0f, 8.0f);
@@ -136,76 +155,7 @@ namespace imgui_kit
 
 	void StyleParameters::apply() const
 	{
-		ImGuiStyle& style = ImGui::GetStyle();
-		style.WindowPadding = windowPadding;
-		style.WindowRounding = windowRounding;
-		style.Alpha = transparency;
-		style.Colors[ImGuiCol_WindowBg] = windowBgColor;
-		style.Colors[ImGuiCol_Text] = textColor;
-
-		// Derive other colors from themeColor
-		const ImVec4 base = themeColor; // Base theme color for reference
-		const ImVec4 dark = ImVec4(base.x * 0.6f, base.y * 0.6f, base.z * 0.6f, base.w); // Darker variant
-		const ImVec4 darker = ImVec4(base.x * 0.4f, base.y * 0.4f, base.z * 0.4f, base.w); // Even darker
-		const ImVec4 light = ImVec4(base.x * 1.2f, base.y * 1.2f, base.z * 1.2f, base.w); // Lighter variant
-		const ImVec4 lighter = ImVec4(base.x * 1.4f, base.y * 1.4f, base.z * 1.4f, base.w); // Even lighter
-		const ImVec4 disabled = ImVec4(base.x * 0.5f, base.y * 0.5f, base.z * 0.5f, base.w); // Disabled / grayed
-		const ImVec4 highlight = ImVec4(base.x * 0.7f, base.y * 0.7f, base.z * 0.7f, base.w); // Highlighted / active
-
-		// Setting up colors
-		style.Colors[ImGuiCol_TextDisabled] = disabled;
-		style.Colors[ImGuiCol_TextSelectedBg] = dark;
-		style.Colors[ImGuiCol_WindowBg] = base; // Main background
-		style.Colors[ImGuiCol_ChildBg] = base; // Child window background
-		style.Colors[ImGuiCol_PopupBg] = base; // Popup background
-		style.Colors[ImGuiCol_BorderShadow] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f); // Border shadow (transparent)
-		style.Colors[ImGuiCol_FrameBg] = dark;
-		style.Colors[ImGuiCol_FrameBgHovered] = highlight;
-		style.Colors[ImGuiCol_FrameBgActive] = darker;
-		style.Colors[ImGuiCol_TabUnfocused] = dark;
-		style.Colors[ImGuiCol_DockingEmptyBg] = darker; // Empty docking background
-		style.Colors[ImGuiCol_PlotLines] = light;
-		style.Colors[ImGuiCol_PlotLinesHovered] = lighter;
-		style.Colors[ImGuiCol_PlotHistogram] = light;
-		style.Colors[ImGuiCol_PlotHistogramHovered] = lighter;
-		style.Colors[ImGuiCol_Separator] = dark;
-		style.Colors[ImGuiCol_SeparatorHovered] = highlight;
-		style.Colors[ImGuiCol_SeparatorActive] = darker;
-		style.Colors[ImGuiCol_ResizeGrip] = base;
-		style.Colors[ImGuiCol_ResizeGripHovered] = highlight;
-		style.Colors[ImGuiCol_ResizeGripActive] = darker;
-		style.Colors[ImGuiCol_TabUnfocusedActive] = darker;
-		style.Colors[ImGuiCol_DockingPreview] = light; // Docking preview overlay
-		style.Colors[ImGuiCol_Button] = dark;
-		style.Colors[ImGuiCol_ButtonHovered] = highlight;
-		style.Colors[ImGuiCol_ButtonActive] = darker;
-		style.Colors[ImGuiCol_TitleBg] = dark;
-		style.Colors[ImGuiCol_TitleBgActive] = highlight;
-		style.Colors[ImGuiCol_TitleBgCollapsed] = base;
-		style.Colors[ImGuiCol_Header] = dark;
-		style.Colors[ImGuiCol_HeaderHovered] = highlight;
-		style.Colors[ImGuiCol_HeaderActive] = darker;
-		style.Colors[ImGuiCol_Tab] = dark;
-		style.Colors[ImGuiCol_TabHovered] = highlight;
-		style.Colors[ImGuiCol_TabActive] = darker;
-		style.Colors[ImGuiCol_Border] = ImVec4(dark.x, dark.y, dark.z, 0.6f);  // Muted border
-		style.Colors[ImGuiCol_MenuBarBg] = dark;                               // Menu bar background
-		style.Colors[ImGuiCol_ScrollbarBg] = darker;                           // Scrollbar background
-		style.Colors[ImGuiCol_ScrollbarGrab] = dark;                           // Scrollbar grab
-		style.Colors[ImGuiCol_ScrollbarGrabHovered] = highlight;               // Scrollbar grab hover
-		style.Colors[ImGuiCol_ScrollbarGrabActive] = darker;                   // Scrollbar grab active
-		style.Colors[ImGuiCol_CheckMark] = ImVec4(light.x * 1.1f, light.y * 1.3f, light.z * 1.5f, 1.0f); // Accent checkmark
-		style.Colors[ImGuiCol_SliderGrab] = light;
-		style.Colors[ImGuiCol_SliderGrabActive] = lighter;
-		style.Colors[ImGuiCol_TableHeaderBg] = dark;
-		style.Colors[ImGuiCol_TableBorderStrong] = ImVec4(dark.x * 0.9f, dark.y * 0.9f, dark.z * 0.9f, 1.0f); // Strong border
-		style.Colors[ImGuiCol_TableBorderLight] = dark;
-		style.Colors[ImGuiCol_TableRowBg] = ImVec4(base.x * 0.8f, base.y * 0.8f, base.z * 0.8f, 1.0f);       // Table row background
-		style.Colors[ImGuiCol_TableRowBgAlt] = ImVec4(base.x * 0.7f, base.y * 0.7f, base.z * 0.7f, 1.0f);    // Alternate table row background
-		style.Colors[ImGuiCol_NavHighlight] = ImVec4(highlight.x * 1.1f, highlight.y * 1.1f, highlight.z * 1.1f, 1.0f);
-		style.Colors[ImGuiCol_NavWindowingHighlight] = ImVec4(0.7f, 0.85f, 1.0f, 0.8f);
-		style.Colors[ImGuiCol_NavWindowingDimBg] = ImVec4(0.1f, 0.1f, 0.1f, 0.75f);
-		style.Colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.1f, 0.1f, 0.1f, 0.75f);
+		themes[theme]();
 	}
 
 	IconParameters::IconParameters(std::string path, int width, int height)

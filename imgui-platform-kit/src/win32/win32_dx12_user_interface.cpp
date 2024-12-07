@@ -203,28 +203,47 @@ namespace imgui_kit
 		}
 
         void UserInterface::loadFont()
-		{
-        	ImGuiIO& io_ref = ImGui::GetIO(); (void)io_ref;
-            size_t pos;
-            while ((pos = parameters.fontParameters.path.find('/')) != std::string::npos)
-                parameters.fontParameters.path.replace(pos, 1, "\\");
+        {
+            ImGuiIO& io_ref = ImGui::GetIO(); (void)io_ref;
 
-            if (!std::filesystem::exists(parameters.fontParameters.path))
+            bool fontLoaded = false;
+
+            for (const auto& [path, size] : parameters.fontParameters.pathsAndSizes)
             {
-                std::cerr << "Font file does not exist: " << parameters.fontParameters.path << std::endl;
-                io_ref.Fonts->AddFontDefault();
-                return;
+                // Replace forward slashes with backslashes
+                std::string adjustedPath = path;
+                size_t pos;
+                while ((pos = adjustedPath.find('/')) != std::string::npos)
+                    adjustedPath.replace(pos, 1, "\\");
+
+                // Check if the font file exists
+                if (!std::filesystem::exists(adjustedPath))
+                {
+                    std::cerr << "Font file does not exist: " << adjustedPath << std::endl;
+                    continue; // Try the next font in the list
+                }
+
+                // Attempt to load the font
+                const ImFont* font = io_ref.Fonts->AddFontFromFileTTF(adjustedPath.c_str(), static_cast<float>(size));
+                if (font == nullptr)
+                {
+                    std::cerr << "Failed to load font: " << adjustedPath << " with size " << size << std::endl;
+                    continue; // Try the next font in the list
+                }
+
+                fontLoaded = true; // At least one font was loaded successfully
             }
 
-            const ImFont* font = io_ref.Fonts->AddFontFromFileTTF(parameters.fontParameters.path.c_str(), 
-                static_cast<float>(parameters.fontParameters.size));
-            if (font == nullptr)
+            // If no fonts were loaded, add a default font
+            if (!fontLoaded)
             {
+                std::cerr << "No fonts loaded successfully. Adding default font." << std::endl;
                 io_ref.Fonts->AddFontDefault();
-				std::cerr << "Failed to load font." << std::endl;
             }
+
+            // Set global scale
             io_ref.FontGlobalScale = GetDpiScale(windowHandle);
-		}
+        }
 
         void UserInterface::loadBackgroundImage()
         {

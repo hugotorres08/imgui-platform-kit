@@ -14,10 +14,12 @@
 #endif
 
 #include "imgui.h"
+#include "themes.h"
 
 namespace imgui_kit
 {
 	constexpr char defaultWindowParametersFilename[] = "imgui_window_parameters.ini";
+	constexpr char defaultThemeParametersFilename[] = "imgui_theme_parameters.ini";
 
 	struct WindowParameters
 	{
@@ -34,17 +36,15 @@ namespace imgui_kit
 
 	struct FontParameters
 	{
-		std::string path;
-		int size;
+		std::vector<std::pair<std::string, int>> pathsAndSizes;
 
 		FontParameters(std::string path = "", int size = 12);
+		FontParameters(const std::vector<std::pair<std::string, int>>& pathsAndSizes);
 	};
-
-	constexpr ImVec4 defaultThemeColor = ImVec4(0.2f, 0.2f, 0.2f, 1.0f); // A darkish gray
 
 	struct StyleParameters
 	{
-		ImVec4 themeColor;
+		Theme theme;
 		ImVec4 windowBgColor;
 		ImVec2 windowPadding;
 		float windowRounding;
@@ -52,8 +52,8 @@ namespace imgui_kit
 		ImVec4 textColor;
 
 		StyleParameters();
-		StyleParameters(ImVec4 themeColor);
-		StyleParameters(ImVec4 themeColor, ImVec4 bgColor);
+		StyleParameters(Theme theme);
+		StyleParameters(Theme theme, ImVec4 bgColor);
 
 		void apply() const;
 	};
