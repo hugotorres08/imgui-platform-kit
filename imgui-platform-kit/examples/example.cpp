@@ -19,9 +19,13 @@ int main(int argc, char* argv[])
 
 		// You can use the following parameters to customize the user interface
 		const WindowParameters windowParameters("imgui-platform-kit!");
-		const FontParameters fontParameters({	{std::string(PROJECT_DIR) + "/resources/fonts/Lexend-Light.ttf", 20},
-												{std::string(PROJECT_DIR) + "/resources/fonts/Lexend-Regular.ttf", 20},
-												{std::string(PROJECT_DIR) + "/resources/fonts/Lexend-Bold.ttf", 20} });
+		const FontParameters fontParameters({	{std::string(PROJECT_DIR) + "/resources/fonts/JetBrainsMono-Regular.ttf", 20},
+												{std::string(PROJECT_DIR) + "/resources/fonts/JetBrainsMono-Thin.ttf", 20},
+												{std::string(PROJECT_DIR) + "/resources/fonts/JetBrainsMono-Medium.ttf", 20},
+												{std::string(PROJECT_DIR) + "/resources/fonts/JetBrainsMono-Bold.ttf", 20},
+												{std::string(PROJECT_DIR) + "/resources/fonts/JetBrainsMono-Italic.ttf", 20},
+												{std::string(PROJECT_DIR) + "/resources/fonts/JetBrainsMono-Light.ttf", 20},
+		});
 		constexpr ImVec4 backgroundColor = colours::DarkGray;
 		const StyleParameters styleParameters(Theme::Moonlight, backgroundColor);
 		#ifdef _WIN32
@@ -45,11 +49,11 @@ int main(int argc, char* argv[])
 		userInterface.addWindow<LogWindow>();
 		//userInterface.addWindow<SomeOtherWindow>(arg1, arg2, arg3);
 
-		LogWindow::addLog(colours::Green,"[DEBUG] Debug message.");
-		LogWindow::addLog(colours::White,"[INFO] User  interface initialized.");
+		LogWindow::addLog(colours::Green, "[DEBUG]   Debug message.");
+		LogWindow::addLog(colours::White, "[INFO]    User  interface initialized.");
 		LogWindow::addLog(colours::Yellow,"[WARNING] Warning message.");
-		LogWindow::addLog(colours::Red,"[ERROR] Error message.");
-		LogWindow::addLog(colours::Red,"[FATAL] Fatal error message.");
+		LogWindow::addLog(colours::Red,   "[ERROR]   Error message.");
+		LogWindow::addLog(colours::Red,   "[FATAL]   Fatal error message.");
 
 		userInterface.initialize();
 		while(!userInterface.isShutdownRequested())

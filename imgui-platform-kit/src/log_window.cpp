@@ -53,7 +53,7 @@ namespace imgui_kit
                 if (filter.PassFilter(entry.message.c_str())) 
                 {
                     ImGui::PushStyleColor(ImGuiCol_Text, entry.color);
-                    ImGui::TextUnformatted(entry.message.c_str());
+                    ImGui::TextEx(entry.message.c_str());
                     ImGui::PopStyleColor();
                 }
             }
