@@ -10,7 +10,6 @@
 #include "user_interface.h"
 #include "template_window.h"
 #include "log_window.h"
-#include "theme_window.h"
 
 int main(int argc, char* argv[])
 {
@@ -44,7 +43,6 @@ int main(int argc, char* argv[])
 
 		userInterface.addWindow<TemplateWindow>();
 		userInterface.addWindow<LogWindow>();
-		userInterface.addWindow<ThemeWindow>();
 		//userInterface.addWindow<SomeOtherWindow>(arg1, arg2, arg3);
 
 		LogWindow::addLog(colours::Green,"[DEBUG] Debug message.");

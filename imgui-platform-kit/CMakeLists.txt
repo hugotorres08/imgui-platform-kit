@@ -51,7 +51,6 @@ set(common_header
     "include/user_interface.h"
     "include/colour_palette.h"
     "include/themes.h"
-    "include/theme_window.h"
 )
 
 if(WIN32)
@@ -72,7 +71,6 @@ set(common_src
     "src/template_window.cpp"
     "src/log_window.cpp"
     "src/themes.cpp"
-    "src/theme_window.cpp"
 )
 
 if(WIN32)

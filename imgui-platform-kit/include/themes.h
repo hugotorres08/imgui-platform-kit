@@ -6,6 +6,8 @@
 
 namespace imgui_kit
 {
+    void showImGuiKitThemeSelector(bool* p_open = nullptr);
+
     // theme list from https://github.com/Patitotective/ImThemes
     enum class Theme
     {

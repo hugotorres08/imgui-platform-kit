@@ -1,5 +1,7 @@
 #include "template_window.h"
 
+#include "themes.h"
+
 namespace imgui_kit
 {
 	void TemplateWindow::render()
@@ -12,5 +14,7 @@ namespace imgui_kit
 		ImGui::ShowDemoWindow();
 		ImGui::ShowStyleEditor();
 		ImPlot::ShowDemoWindow();
+		static bool show = true;
+		imgui_kit::showImGuiKitThemeSelector(&show);
 	}
 }
