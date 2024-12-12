@@ -16,7 +16,8 @@ fi
 
 # Install packages using Vcpkg
 sudo vcpkg install imgui[docking-experimental,core,opengl3-binding,glfw-binding]
-sudo vcpkg  install implot
+sudo vcpkg install implot
+sudo vcpkg install imgui-node-editor
 
 # Integrate install might require elevation (sudo)
 #sudo vcpkg integrate install

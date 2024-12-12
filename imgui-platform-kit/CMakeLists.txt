@@ -41,9 +41,6 @@ include(${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake)
 set(PROJECT_DIR "${CMAKE_SOURCE_DIR}")
 add_compile_definitions(PROJECT_DIR="${PROJECT_DIR}")
 
-set(OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/data")
-add_compile_definitions(OUTPUT_DIRECTORY="${OUTPUT_DIRECTORY}")
-
 # Header and source files
 set(common_header
     "include/user_interface_window.h"
@@ -53,6 +50,7 @@ set(common_header
     "include/stb_image.h"
     "include/user_interface.h"
     "include/colour_palette.h"
+    "include/themes.h"
 )
 
 if(WIN32)
@@ -72,6 +70,7 @@ set(common_src
     "src/user_interface_parameters.cpp"
     "src/template_window.cpp"
     "src/log_window.cpp"
+    "src/themes.cpp"
 )
 
 if(WIN32)
@@ -110,6 +109,10 @@ endif()
 # Setup implot
 find_package(implot CONFIG REQUIRED)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE implot::implot)
+
+# Setup imgui-node-editor
+find_package(unofficial-imgui-node-editor CONFIG REQUIRED)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE unofficial::imgui-node-editor::imgui-node-editor)
 
 target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC
     IMGUI_PLATFORM_KIT=1

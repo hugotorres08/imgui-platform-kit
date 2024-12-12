@@ -21,6 +21,10 @@
 #include "implot.h"
 #include "implot_internal.h"
 
+#include "imgui-node-editor/imgui_node_editor.h"
+namespace ImNodeEditor = ax::NodeEditor;
+
+
 // [Win32] Our example includes a copy of glfw3.lib pre-compiled with VS2010 to maximize ease of testing and compatibility with old VS compilers.
 // To link with VS2010-era libraries, VS2015+ requires linking with legacy_stdio_definitions.lib, which we do using this pragma.
 // Your own project should not be affected, as you are likely to link with a newer binary of GLFW that is adequate for your version of Visual Studio.
@@ -83,11 +87,14 @@ namespace imgui_kit
         void loadBackgroundImage();
         void renderWindows() const;
         void renderBackgroundImage() const;
+        void updateLastRenderedFrameDimensions();
+        void updateFontGlobalScale();
     };
 
 }
 
 // Forward declarations of helper functions
 bool LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_width, int* out_height);
-
+float GetDpiScale(GLFWwindow* window);
+GLFWmonitor* GetActiveMonitor(GLFWwindow* window);
 #endif

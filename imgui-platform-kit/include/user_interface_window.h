@@ -15,6 +15,8 @@
 #include "implot.h"
 #include "implot_internal.h"
 
+#include <imgui-node-editor/imgui_node_editor.h>
+namespace ImNodeEditor = ax::NodeEditor;
 
 namespace imgui_kit
 {

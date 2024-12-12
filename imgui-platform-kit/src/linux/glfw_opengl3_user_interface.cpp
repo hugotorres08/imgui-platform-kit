@@ -61,16 +61,18 @@ namespace imgui_kit
             //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
         #endif
 
+        glfwWindowHint(GLFW_SCALE_TO_MONITOR, GLFW_TRUE);
+
         // Create window with graphics context
         window = glfwCreateWindow(parameters.windowParameters.width, 
         parameters.windowParameters.height, 
         parameters.windowParameters.title.c_str(), nullptr, nullptr);
+        glfwSetWindowPos(window, parameters.windowParameters.startPosX, 
+            parameters.windowParameters.startPosY);
         if (window == nullptr)
             return;
         glfwMakeContextCurrent(window);
         glfwSwapInterval(1); // Enable vsync
-
-        loadIcon();
 
         // Setup Dear ImGui and ImPlot context
         IMGUI_CHECKVERSION();
@@ -84,10 +86,6 @@ namespace imgui_kit
         //io.ConfigViewportsNoAutoMerge = true;
         //io.ConfigViewportsNoTaskBarIcon = true;
 
-        // Setup Dear ImGui style
-        parameters.styleParameters.apply();
-        
-
         // Setup Platform/Renderer backends
         ImGui_ImplGlfw_InitForOpenGL(window, true);
     #ifdef __EMSCRIPTEN__
@@ -95,6 +93,9 @@ namespace imgui_kit
     #endif
         ImGui_ImplOpenGL3_Init(glsl_version);
 
+        // Setup Dear ImGui style
+        parameters.styleParameters.apply();
+        loadIcon();
         loadFont();
         loadBackgroundImage();
     }
@@ -131,6 +132,7 @@ namespace imgui_kit
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         ImGuiIO& io = ImGui::GetIO(); (void)io;
+        updateFontGlobalScale();
         // Update and Render additional Platform Windows
         // (Platform functions may change the current OpenGL context, so we save/restore it to make it easier to paste this code elsewhere.
         //  For this specific demo app we could also call glfwMakeContextCurrent(window) directly)
@@ -143,10 +145,14 @@ namespace imgui_kit
         }
 
         glfwSwapBuffers(window);
+
+        updateLastRenderedFrameDimensions();
     }
 
     void UserInterface::shutdown()
     {
+        parameters.save();
+        ImNodeEditor::DestroyEditor(ImNodeEditor::GetCurrentEditor());
         ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplGlfw_Shutdown();
         ImGui::DestroyContext();
@@ -179,24 +185,64 @@ namespace imgui_kit
         }
     }
 
+    // void UserInterface::loadFont()
+    // {
+    //     ImGuiIO& io_ref = ImGui::GetIO(); (void)io_ref;
+
+    //     if (!std::filesystem::exists(parameters.fontParameters.path))
+    //     {
+    //         std::cerr << "Font file does not exist: " << parameters.fontParameters.path << std::endl;
+    //         io_ref.Fonts->AddFontDefault();
+    //         return;
+    //     }
+
+    //     const ImFont* font = io_ref.Fonts->AddFontFromFileTTF(parameters.fontParameters.path.c_str(), 
+    //         static_cast<float>(parameters.fontParameters.size));
+    //     if (font == nullptr)
+    //     {
+    //         io_ref.Fonts->AddFontDefault();
+    //         std::cerr << "Failed to load font." << std::endl;
+    //     }
+    //     io_ref.FontGlobalScale = GetDpiScale(window);
+    // }
+
     void UserInterface::loadFont()
     {
-        const ImGuiIO& io_ref = ImGui::GetIO(); (void)io_ref;
+        ImGuiIO& io_ref = ImGui::GetIO(); (void)io_ref;
 
-        if (!std::filesystem::exists(parameters.fontParameters.path))
+        bool fontLoaded = false;
+
+        for (const auto& [path, size] : parameters.fontParameters.pathsAndSizes)
         {
-            std::cerr << "Font file does not exist: " << parameters.fontParameters.path << std::endl;
-            io_ref.Fonts->AddFontDefault();
-            return;
+            // Check if the font file exists
+            if (!std::filesystem::exists(path))
+            {
+                std::cerr << "Font file does not exist: " << path << std::endl;
+                continue; // Try the next font in the list
+            }
+
+            // Attempt to load the font
+            const ImFont* font = io_ref.Fonts->AddFontFromFileTTF(path.c_str(), static_cast<float>(size));
+            if (font == nullptr)
+            {
+                std::cerr << "Failed to load font: " << path << " with size " << size << std::endl;
+                continue; // Try the next font in the list
+            }
+
+            fontLoaded = true; // At least one font was loaded successfully
         }
 
-        const ImFont* font = io_ref.Fonts->AddFontFromFileTTF(parameters.fontParameters.path.c_str(), static_cast<float>(parameters.fontParameters.size));
-        if (font == nullptr)
+        // If no fonts were loaded, add a default font
+        if (!fontLoaded)
         {
+            std::cerr << "No fonts loaded successfully. Adding default font." << std::endl;
             io_ref.Fonts->AddFontDefault();
-            std::cerr << "Failed to load font." << std::endl;
         }
+
+        // Set global scale
+        io_ref.FontGlobalScale = GetDpiScale(window);
     }
+
 
     void UserInterface::loadBackgroundImage()
     {
@@ -226,9 +272,48 @@ namespace imgui_kit
         // Use the viewport's size to determine how to center the image
         const ImVec2 windowSize = viewport->Size; // This is the size of the area we can draw in
 
-        // Calculate the image's dimensions
-        static const ImVec2 imageSize = ImVec2((float)backgroundImageTexture.parameters.width * (float)backgroundImageTexture.parameters.scale,
-            (float)backgroundImageTexture.parameters.height * (float)backgroundImageTexture.parameters.scale);
+        const float dpiScale = GetDpiScale(window);
+
+        // Original image size scaled by DPI
+        const ImVec2 originalImageSize = ImVec2(
+            (float)backgroundImageTexture.parameters.width * dpiScale,
+            (float)backgroundImageTexture.parameters.height * dpiScale);
+
+        // Calculate the aspect ratio of the image
+        const float aspectRatio = originalImageSize.x / originalImageSize.y;
+
+        ImVec2 imageSize;
+        switch (parameters.backgroundImageParameters.fitType)
+        {
+        case ImageFitType::KEEP_ASPECT_RATIO:
+        {
+            if (windowSize.x / aspectRatio <= windowSize.y) // Fit to width
+            {
+                imageSize.x = windowSize.x;
+                imageSize.y = windowSize.x / aspectRatio;
+            }
+            else // Fit to height
+            {
+                imageSize.y = windowSize.y;
+                imageSize.x = windowSize.y * aspectRatio;
+            }
+        }
+        break;
+        case ImageFitType::ZOOM_TO_FIT:
+        {
+            if (windowSize.x / aspectRatio > windowSize.y) // Cover height
+            {
+                imageSize.x = windowSize.x;
+                imageSize.y = windowSize.x / aspectRatio;
+            }
+            else // Cover width
+            {
+                imageSize.y = windowSize.y;
+                imageSize.x = windowSize.y * aspectRatio;
+            }
+        }
+        break;
+        }
 
         // Calculate the top-left position to center the image in the viewport
         const ImVec2 pos = ImVec2(viewport->Pos.x + (windowSize.x - imageSize.x) * 0.5f,
@@ -238,8 +323,29 @@ namespace imgui_kit
         ImGui::GetBackgroundDrawList(viewport)->AddImage(
             (ImTextureID)backgroundImageTexture.texture,
             pos, ImVec2(pos.x + imageSize.x, pos.y + imageSize.y));
+    }	
+
+    void UserInterface::updateLastRenderedFrameDimensions()
+    {
+        if (window != nullptr)
+        {
+            int width, height, posX, posY;
+            glfwGetWindowSize(window, &width, &height);
+            glfwGetWindowPos(window, &posX, &posY);
+            parameters.windowParameters.width = width;
+            parameters.windowParameters.height = height;
+            parameters.windowParameters.startPosX = posX;
+            parameters.windowParameters.startPosY = posY;
+        }
+        else
+            std::cerr << "Invalid GLFW window." << std::endl;
     }
-	
+
+    void UserInterface::updateFontGlobalScale()
+    {
+        ImGuiIO& io_ref = ImGui::GetIO(); (void)io_ref;
+        io_ref.FontGlobalScale = GetDpiScale(window);
+    }
 }
 
 
@@ -276,6 +382,42 @@ bool LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_wid
     *out_height = image_height;
 
     return true;
+}
+
+// Helper function to find the monitor where the window is currently located
+GLFWmonitor* GetActiveMonitor(GLFWwindow* window) 
+{
+    int windowX, windowY, windowWidth, windowHeight;
+    int monitorCount;
+    GLFWmonitor** monitors = glfwGetMonitors(&monitorCount);
+
+    glfwGetWindowPos(window, &windowX, &windowY);
+    glfwGetWindowSize(window, &windowWidth, &windowHeight);
+
+    for (int i = 0; i < monitorCount; i++) {
+        int monitorX, monitorY;
+        const GLFWvidmode* mode = glfwGetVideoMode(monitors[i]);
+        glfwGetMonitorPos(monitors[i], &monitorX, &monitorY);
+
+        if (windowX >= monitorX &&
+            windowY >= monitorY &&
+            windowX + windowWidth <= monitorX + mode->width &&
+            windowY + windowHeight <= monitorY + mode->height) 
+        {
+            return monitors[i];
+        }
+    }
+    // Return the primary monitor if the window is not fully on any monitor
+    return glfwGetPrimaryMonitor();
+}
+
+// Helper function to get the DPI scale of a window
+float GetDpiScale(GLFWwindow* window)
+{
+	float xscale, yscale;
+    GLFWmonitor* monitor = GetActiveMonitor(window);
+    glfwGetMonitorContentScale(monitor, &xscale, &yscale);
+    return yscale;
 }
 
 #endif

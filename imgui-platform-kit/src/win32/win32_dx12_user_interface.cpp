@@ -27,25 +27,25 @@ namespace imgui_kit
 
 		void UserInterface::initialize()
 		{
-            const std::wstring lpszClassName = StringToWString(parameters.windowParameters.title);
-            const std::wstring lpszWindowName = lpszClassName;
+            const std::wstring lpszWindowName = StringToWString(parameters.windowParameters.title);
 
 			ImGui_ImplWin32_EnableDpiAwareness();
 			windowClass = { sizeof(windowClass), CS_CLASSDC, WndProc, 0L, 0L,
-				GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr, lpszClassName.c_str(), nullptr};
+				GetModuleHandle(nullptr), nullptr, nullptr, nullptr,
+				nullptr, lpszWindowName.c_str(), nullptr};
 			::RegisterClassExW(&windowClass);
 
 			windowHandle = ::CreateWindowW(windowClass.lpszClassName, lpszWindowName.c_str(),
-				WS_OVERLAPPEDWINDOW, 0, 0, parameters.windowParameters.width, parameters.windowParameters.height, nullptr, nullptr, windowClass.hInstance, nullptr);
-
-            loadIcon();
+				WS_OVERLAPPEDWINDOW, parameters.windowParameters.startPosX, parameters.windowParameters.startPosY, parameters.windowParameters.width, 
+                parameters.windowParameters.height, nullptr, nullptr, windowClass.hInstance, nullptr);
 
 			// Initialize Direct3D
+            shutdownRequest = false;
 			if (!CreateDeviceD3D(windowHandle))
 			{
 				CleanupDeviceD3D();
 				::UnregisterClassW(windowClass.lpszClassName, windowClass.hInstance);
-                shutdownRequest = true;
+                //shutdownRequest = true;
 			}
 
 			// Show the window
@@ -56,20 +56,15 @@ namespace imgui_kit
 			IMGUI_CHECKVERSION();
 			ImGui::CreateContext();
 			ImPlot::CreateContext();
+
 			ImGuiIO& io_ref = ImGui::GetIO(); (void)io_ref;
 			io_ref.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 			io_ref.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 			io_ref.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
 			io_ref.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
+			// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
 			//io.ConfigViewportsNoAutoMerge = true;
 			//io.ConfigViewportsNoTaskBarIcon = true;
-
-			// Setup Dear ImGui style
-			//ImGui::StyleColorsDark();
-			//ImGui::StyleColorsLight();
-
-			// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
-            parameters.styleParameters.apply();
 
 			// Setup Platform/Renderer backends
 			ImGui_ImplWin32_Init(windowHandle);
@@ -78,8 +73,10 @@ namespace imgui_kit
 				g_pd3dSrvDescHeap->GetCPUDescriptorHandleForHeapStart(),
 				g_pd3dSrvDescHeap->GetGPUDescriptorHandleForHeapStart());
 
+            loadIcon();
 			loadFont();
             loadBackgroundImage();
+            parameters.styleParameters.apply();
 		}
 
 		void UserInterface::render()
@@ -87,6 +84,7 @@ namespace imgui_kit
 			// Poll and handle messages (inputs, window resize, etc.)
 		   // See the WndProc() function below for our to dispatch events to the Win32 backend.
 			MSG msg;
+            shutdownRequest = false;
 			while (::PeekMessage(&msg, nullptr, 0U, 0U, PM_REMOVE))
 			{
 				::TranslateMessage(&msg);
@@ -105,7 +103,7 @@ namespace imgui_kit
 
             renderBackgroundImage();
             renderWindows();
-
+            
 			ImGui::Render();
 
 			FrameContext* frameCtx = WaitForNextFrameResources();
@@ -139,11 +137,8 @@ namespace imgui_kit
 
 			g_pd3dCommandQueue->ExecuteCommandLists(1, (ID3D12CommandList* const*)&g_pd3dCommandList);
 
-			ImGuiIO& io_ref = ImGui::GetIO(); (void)io_ref;
-			//io_ref.FontGlobalScale = 1.2f; // Adjust the scale factor as needed
-			//ImFont* font = io_ref.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Arial.ttf", 16.0f);
-			//IM_ASSERT(font != NULL);
 
+            const ImGuiIO& io_ref = ImGui::GetIO(); (void)io_ref;
 			// Update and Render additional Platform Windows
 			if (io_ref.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 			{
@@ -158,15 +153,19 @@ namespace imgui_kit
 			g_pd3dCommandQueue->Signal(g_fence, fenceValue);
 			g_fenceLastSignaledValue = fenceValue;
 			frameCtx->FenceValue = fenceValue;
+
+            updateLastRenderedFrameDimensions();
 		}
 
 		void UserInterface::shutdown()
 		{
 			WaitForLastSubmittedFrame();
 
+            parameters.save();
             backgroundImageTexture.release();
 
 			// Cleanup
+            ImNodeEditor::DestroyEditor(ImNodeEditor::GetCurrentEditor());
 			ImGui_ImplDX12_Shutdown();
 			ImGui_ImplWin32_Shutdown();
 			ImGui::DestroyContext();
@@ -204,26 +203,47 @@ namespace imgui_kit
 		}
 
         void UserInterface::loadFont()
-		{
-            const ImGuiIO& io_ref = ImGui::GetIO(); (void)io_ref;
-            size_t pos;
-            while ((pos = parameters.fontParameters.path.find('/')) != std::string::npos)
-                parameters.fontParameters.path.replace(pos, 1, "\\");
+        {
+            ImGuiIO& io_ref = ImGui::GetIO(); (void)io_ref;
 
-            if (!std::filesystem::exists(parameters.fontParameters.path))
+            bool fontLoaded = false;
+
+            for (const auto& [path, size] : parameters.fontParameters.pathsAndSizes)
             {
-                std::cerr << "Font file does not exist: " << parameters.fontParameters.path << std::endl;
-                io_ref.Fonts->AddFontDefault();
-                return;
+                // Replace forward slashes with backslashes
+                std::string adjustedPath = path;
+                size_t pos;
+                while ((pos = adjustedPath.find('/')) != std::string::npos)
+                    adjustedPath.replace(pos, 1, "\\");
+
+                // Check if the font file exists
+                if (!std::filesystem::exists(adjustedPath))
+                {
+                    std::cerr << "Font file does not exist: " << adjustedPath << std::endl;
+                    continue; // Try the next font in the list
+                }
+
+                // Attempt to load the font
+                const ImFont* font = io_ref.Fonts->AddFontFromFileTTF(adjustedPath.c_str(), static_cast<float>(size));
+                if (font == nullptr)
+                {
+                    std::cerr << "Failed to load font: " << adjustedPath << " with size " << size << std::endl;
+                    continue; // Try the next font in the list
+                }
+
+                fontLoaded = true; // At least one font was loaded successfully
             }
 
-            const ImFont* font = io_ref.Fonts->AddFontFromFileTTF(parameters.fontParameters.path.c_str(), static_cast<float>(parameters.fontParameters.size));
-            if (font == nullptr)
+            // If no fonts were loaded, add a default font
+            if (!fontLoaded)
             {
+                std::cerr << "No fonts loaded successfully. Adding default font." << std::endl;
                 io_ref.Fonts->AddFontDefault();
-				std::cerr << "Failed to load font." << std::endl;
             }
-		}
+
+            // Set global scale
+            io_ref.FontGlobalScale = GetDpiScale(windowHandle);
+        }
 
         void UserInterface::loadBackgroundImage()
         {
@@ -265,9 +285,48 @@ namespace imgui_kit
             // Use the viewport's size to determine how to center the image
             const ImVec2 windowSize = viewport->Size; // This is the size of the area we can draw in
 
-            // Calculate the image's dimensions
-            static const ImVec2 imageSize = ImVec2((float)backgroundImageTexture.parameters.width * (float)backgroundImageTexture.parameters.scale,
-                (float)backgroundImageTexture.parameters.height * (float)backgroundImageTexture.parameters.scale);
+            const float dpiScale = GetDpiScale(windowHandle);
+
+            // Original image size scaled by DPI
+            const ImVec2 originalImageSize = ImVec2(
+                (float)backgroundImageTexture.parameters.width * dpiScale,
+                (float)backgroundImageTexture.parameters.height * dpiScale);
+
+            // Calculate the aspect ratio of the image
+            const float aspectRatio = originalImageSize.x / originalImageSize.y;
+
+            ImVec2 imageSize;
+            switch (parameters.backgroundImageParameters.fitType)
+            {
+            case ImageFitType::KEEP_ASPECT_RATIO:
+            {
+                if (windowSize.x / aspectRatio <= windowSize.y) // Fit to width
+                {
+                    imageSize.x = windowSize.x;
+                    imageSize.y = windowSize.x / aspectRatio;
+                }
+                else // Fit to height
+                {
+                    imageSize.y = windowSize.y;
+                    imageSize.x = windowSize.y * aspectRatio;
+                }
+            }
+            break;
+            case ImageFitType::ZOOM_TO_FIT:
+            {
+                if (windowSize.x / aspectRatio > windowSize.y) // Cover height
+                {
+                    imageSize.x = windowSize.x;
+                    imageSize.y = windowSize.x / aspectRatio;
+                }
+                else // Cover width
+                {
+                    imageSize.y = windowSize.y;
+                    imageSize.x = windowSize.y * aspectRatio;
+                }
+            }
+            break;
+            }
 
             // Calculate the top-left position to center the image in the viewport
             const ImVec2 pos = ImVec2(viewport->Pos.x + (windowSize.x - imageSize.x) * 0.5f,
@@ -278,6 +337,23 @@ namespace imgui_kit
                 (ImTextureID)backgroundImageTexture.srv_gpu_handle.ptr,
                 pos, ImVec2(pos.x + imageSize.x, pos.y + imageSize.y));
         }
+
+		void UserInterface::updateLastRenderedFrameDimensions()
+		{
+            RECT rect;
+            if (GetWindowRect(windowHandle, &rect))
+            {
+                parameters.windowParameters.width = rect.right - rect.left;
+                parameters.windowParameters.height = rect.bottom - rect.top;
+                parameters.windowParameters.startPosX = rect.left;
+                parameters.windowParameters.startPosY = rect.top;
+            }
+            else
+            {
+                const DWORD error = GetLastError();
+                std::cerr << "GetWindowRect failed with error: " << error << std::endl;
+            }
+		}
 }
 
 // Helper functions
@@ -512,6 +588,13 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
             CreateRenderTarget();
         }
         return 0;
+    case WM_DPICHANGED:
+        if (g_pd3dDevice != nullptr)
+		{
+            ImGuiIO& io_ref = ImGui::GetIO(); (void)io_ref;
+            io_ref.FontGlobalScale = GetDpiScale(hWnd);
+		}
+        return 0;
     case WM_SYSCOMMAND:
         if ((wParam & 0xfff0) == SC_KEYMENU) // Disable ALT application menu
             return 0;
@@ -689,6 +772,13 @@ std::wstring StringToWString(const std::string& str) {
     std::wstring wstr(size_needed, 0);
     MultiByteToWideChar(CP_UTF8, 0, &str[0], (int)str.size(), &wstr[0], size_needed);
     return wstr;
+}
+
+// Helper function to get the DPI scale of a window
+float GetDpiScale(HWND hWnd)
+{
+	const UINT dpi = GetDpiForWindow(hWnd);
+	return (float)dpi / 96.0f;
 }
 
 #endif
