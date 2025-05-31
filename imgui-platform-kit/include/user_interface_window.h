@@ -20,13 +20,19 @@ namespace ImNodeEditor = ax::NodeEditor;
 
 namespace imgui_kit
 {
-	struct UserInterfaceWindowParameters
+	extern ImGuiWindowFlags g_globalWindowFlags;
+	ImGuiWindowFlags getGlobalWindowFlags();
+	void setGlobalWindowFlags(ImGuiWindowFlags flags);
+	void addGlobalWindowFlags(ImGuiWindowFlags flags);
+	void removeGlobalWindowFlags(ImGuiWindowFlags flags);
+
+	struct UserInterfaceWindowParameters final
 	{
 		// This struct is intentionally left empty.
 		// Derived structs are expected to define specific member variables
 		// and functions relevant to their respective elements.
 		UserInterfaceWindowParameters() = default;
-		virtual ~UserInterfaceWindowParameters() = default;
+		~UserInterfaceWindowParameters() = default;
 	};
 
 	class UserInterfaceWindow

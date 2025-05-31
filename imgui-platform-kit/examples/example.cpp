@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
 												{std::string(PROJECT_DIR) + "/resources/fonts/JetBrainsMono-Light.ttf", 20},
 		});
 		constexpr ImVec4 backgroundColor = colours::DarkGray;
-		const StyleParameters styleParameters(Theme::Moonlight, backgroundColor);
+		const StyleParameters styleParameters(Theme::Windark, backgroundColor);
 		#ifdef _WIN32
 		const IconParameters iconParameters(std::string(PROJECT_DIR) + "/resources/icons/icon.ico");
 		#elif __linux__
@@ -44,6 +44,13 @@ int main(int argc, char* argv[])
 
 		// Or you can use the default parameters
 		//UserInterface userInterface;
+
+		// In any part of your code, you can modify the global flags:
+		imgui_kit::setGlobalWindowFlags(ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+		// Or add specific flags:
+		imgui_kit::addGlobalWindowFlags(ImGuiWindowFlags_NoCollapse);
+		// Or remove specific flags:
+		//imgui_kit::removeGlobalWindowFlags(ImGuiWindowFlags_NoMove);
 
 		userInterface.addWindow<TemplateWindow>();
 		userInterface.addWindow<LogWindow>();

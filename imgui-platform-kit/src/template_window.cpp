@@ -6,9 +6,22 @@ namespace imgui_kit
 {
 	void TemplateWindow::render()
 	{
-		ImGui::Begin("Hello, world!");
-		ImGui::Text("This is some useful text.");
-		ImGui::Button("Button");
+		if (ImGui::Begin("Hello, world!"))
+		{
+			ImGui::Text("This is some useful text.");
+			ImGui::Button("Button");
+		}
+		ImGui::End();
+
+		ImGuiWindowFlags flags = imgui_kit::getGlobalWindowFlags();
+
+		// You can still add window-specific flags if needed:
+		flags |= ImGuiWindowFlags_MenuBar; // This window needs a menu bar
+
+		if (ImGui::Begin("My Window", nullptr, flags))
+		{
+			ImGui::Text("This window uses global flags!");
+		}
 		ImGui::End();
 
 		ImGui::ShowDemoWindow();
