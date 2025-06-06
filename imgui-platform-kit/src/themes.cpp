@@ -6,7 +6,8 @@ namespace imgui_kit
 	{
 		static Theme selectedTheme = Theme::Dark;
 
-		if (ImGui::Begin("Style Editor", p_open))
+		ImGui::SetNextWindowSize(ImVec2(500, 80));
+		if (ImGui::Begin("Style Editor", p_open, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse))
 		{
 			const char* currentThemeName = themeNames.at(selectedTheme).c_str();
 			if (ImGui::BeginCombo("Select Theme", currentThemeName))

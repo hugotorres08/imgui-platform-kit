@@ -16,7 +16,7 @@ namespace imgui_kit
         ImVec4 color;
     };
 
-    class LogWindow : public UserInterfaceWindow
+    class LogWindow final : public UserInterfaceWindow
 	{
     private:
         inline static std::vector<LogEntry> logs;

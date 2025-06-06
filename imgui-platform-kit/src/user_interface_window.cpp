@@ -23,5 +23,4 @@ namespace imgui_kit
     {
         g_globalWindowFlags &= ~flags;
     }
-
 }

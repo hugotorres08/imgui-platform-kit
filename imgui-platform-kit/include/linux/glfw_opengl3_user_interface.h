@@ -1,4 +1,6 @@
 
+#pragma once
+
 #if defined(__linux__)
 
 #include "imgui.h"

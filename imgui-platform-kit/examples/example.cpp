@@ -57,7 +57,7 @@ int main(int argc, char* argv[])
 		//userInterface.addWindow<SomeOtherWindow>(arg1, arg2, arg3);
 
 		LogWindow::addLog(colours::Green, "[DEBUG]   Debug message.");
-		LogWindow::addLog(colours::White, "[INFO]    User  interface initialized.");
+		LogWindow::addLog(colours::White, "[INFO]    Informative message.");
 		LogWindow::addLog(colours::Yellow,"[WARNING] Warning message.");
 		LogWindow::addLog(colours::Red,   "[ERROR]   Error message.");
 		LogWindow::addLog(colours::Red,   "[FATAL]   Fatal error message.");
