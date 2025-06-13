@@ -46,6 +46,12 @@ Included in the project are ```build.bat```, ```build.sh``` and ```install.bat``
 - ```build.bat```, ```build.sh```: Compiles the project using predefined CMake commands.
 - ```install.bat```, ```install.sh```: Installs the project to the specified location using CMake.
 
+**Note:**
+In a Linux machine you might have to:
+1. Create a build directory inside the project folder ```mkdir build```;
+2. Set ```VCPKG_ROOT``` directory as an environment variable ```export VCPKG_ROOT=/opt/vcpkg```.
+Before running the ```build.sh```.
+
 ### Integration with Your Project
 After running the ```install.bat```, ```install.sh``` script, the ImGui Platform Kit will be installed on your system. You can then integrate it with your own projects by modifying your CMake configuration to link against the installed ImGui Platform Kit library.
 
