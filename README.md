@@ -49,7 +49,7 @@ Included in the project are ```build.bat```, ```build.sh``` and ```install.bat``
 **Note:**
 In a Linux machine you might have to:
 1. Create a build directory inside the project folder ```mkdir build```;
-2. Set ```VCPKG_ROOT``` directory as an environment variable ```export VCPKG_ROOT=/opt/vcpkg```.
+2. Set ```VCPKG_ROOT``` directory as an environment variable ```export VCPKG_ROOT=/opt/vcpkg``` (see instructions below under Installing VCPKG).
 Before running the ```build.sh```.
 
 ### Integration with Your Project
@@ -137,11 +137,28 @@ sudo ln -s /opt/vcpkg/vcpkg /usr/local/bin/vcpkg
 vcpkg version
 ```
 
-Add vpkg root to your environment variables. Open your .bashrc and add:
-
+Add ```VCPKG_ROOT``` to your environment variables.
+To set variable only for current shell:
 ```bash
-export VCPKG_ROOT=/opt/vcpkg
+VCPKG_ROOT=/opt/vcpkg
 ```
+To set it for current shell and all processes started from current shell:
+```bash
+export VCPKG_ROOT="/opt/vcpkg" # shorter, less portable version
+```
+To set it permanently for all future bash sessions add such line to your ```.bashrc``` file in your ```$HOME``` directory.
+
+To set it permanently, and system wide (all users, all processes) add set variable in /etc/environment:
+```bash
+sudo -H gedit /etc/environment
+```
+This file only accepts variable assignments like:
+```bash
+VCPKG_ROOT=/opt/vcpkg
+```
+Do not use the export keyword here.
+
+Use source ```~/.bashrc``` in your terminal for the changes to take place immediately.
 
 ### Installing OpenGL
 

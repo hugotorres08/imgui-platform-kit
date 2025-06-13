@@ -24,9 +24,6 @@ IF NOT DEFINED VCPKG_ROOT (
 :: Install imgui-node-editor using Vcpkg
 "%VCPKG_ROOT%\vcpkg.exe" install imgui-node-editor:x64-windows
 
-:: Install nlohmann-json using Vcpkg
-"%VCPKG_ROOT%\vcpkg.exe" install nlohmann-json:x64-windows
-
 :: Using MSBuild may require elevation
 "%VCPKG_ROOT%\vcpkg.exe" integrate install
 
