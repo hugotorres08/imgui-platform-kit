@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
 		//UserInterface userInterface;
 
 		// In any part of your code, you can modify the global flags:
-		imgui_kit::setGlobalWindowFlags(ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+		//imgui_kit::setGlobalWindowFlags(ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 		// Or add specific flags:
 		imgui_kit::addGlobalWindowFlags(ImGuiWindowFlags_NoCollapse);
 		// Or remove specific flags:

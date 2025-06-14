@@ -40,8 +40,8 @@ namespace ImNodeEditor = ax::NodeEditor;
 #endif
 
 
-#include "user_interface_parameters.h"
-#include "user_interface_window.h"
+#include "../user_interface_parameters.h"
+#include "../user_interface_window.h"
 
 namespace imgui_kit
 {
@@ -55,7 +55,7 @@ namespace imgui_kit
         , parameters() 
         {}
 
-        GLFWbackgroundImageTexture(BackgroundImageParameters parameters)
+        explicit GLFWbackgroundImageTexture(BackgroundImageParameters parameters)
         : texture(0), parameters(std::move(parameters))
         {}
     };
@@ -70,13 +70,13 @@ namespace imgui_kit
         bool shutdownRequest;
     public:
         UserInterface();
-        UserInterface(UserInterfaceParameters parameters);
+        explicit UserInterface(UserInterfaceParameters parameters);
         ~UserInterface() = default;
 
         void initialize();
         void render();
-        void shutdown();
-        bool isShutdownRequested() const;
+        void shutdown() const;
+        [[nodiscard]] bool isShutdownRequested() const;
         template<typename T, typename... Args>
         void addWindow(Args&&... args)
         {
@@ -90,7 +90,7 @@ namespace imgui_kit
         void renderWindows() const;
         void renderBackgroundImage() const;
         void updateLastRenderedFrameDimensions();
-        void updateFontGlobalScale();
+        void updateFontGlobalScale() const;
     };
 
 }

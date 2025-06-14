@@ -133,10 +133,14 @@ install(TARGETS ${CMAKE_PROJECT_NAME} EXPORT ${CMAKE_PROJECT_NAME}Targets
     FRAMEWORK DESTINATION ${IMGUI_PLATFORM_KIT_FRAMEWORK_INSTALL_DIR}
 )
 
-# Install the headers
+# Install the headers (DIRECTORY preserves the internal directory structure)
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
     DESTINATION ${IMGUI_PLATFORM_KIT_INC_INSTALL_DIR}/imgui-platform-kit
     FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp")
+
+# Install the headers (FILES installs only the files, without recreating their source folder paths)
+#install(FILES ${header}
+#    DESTINATION ${IMGUI_PLATFORM_KIT_INC_INSTALL_DIR}/imgui-platform-kit)
 
 # Package version configuration
 include(CMakePackageConfigHelpers)

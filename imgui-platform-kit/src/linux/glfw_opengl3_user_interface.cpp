@@ -131,7 +131,7 @@ namespace imgui_kit
         glClear(GL_COLOR_BUFFER_BIT);
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-        ImGuiIO& io = ImGui::GetIO(); (void)io;
+        const ImGuiIO& io = ImGui::GetIO(); (void)io;
         updateFontGlobalScale();
         // Update and Render additional Platform Windows
         // (Platform functions may change the current OpenGL context, so we save/restore it to make it easier to paste this code elsewhere.
@@ -149,7 +149,7 @@ namespace imgui_kit
         updateLastRenderedFrameDimensions();
     }
 
-    void UserInterface::shutdown()
+    void UserInterface::shutdown() const
     {
         parameters.save();
         ImNodeEditor::DestroyEditor(ImNodeEditor::GetCurrentEditor());
@@ -184,27 +184,6 @@ namespace imgui_kit
             std::cerr << "Failed to load icon. Error: " << stbi_failure_reason() << std::endl;
         }
     }
-
-    // void UserInterface::loadFont()
-    // {
-    //     ImGuiIO& io_ref = ImGui::GetIO(); (void)io_ref;
-
-    //     if (!std::filesystem::exists(parameters.fontParameters.path))
-    //     {
-    //         std::cerr << "Font file does not exist: " << parameters.fontParameters.path << std::endl;
-    //         io_ref.Fonts->AddFontDefault();
-    //         return;
-    //     }
-
-    //     const ImFont* font = io_ref.Fonts->AddFontFromFileTTF(parameters.fontParameters.path.c_str(), 
-    //         static_cast<float>(parameters.fontParameters.size));
-    //     if (font == nullptr)
-    //     {
-    //         io_ref.Fonts->AddFontDefault();
-    //         std::cerr << "Failed to load font." << std::endl;
-    //     }
-    //     io_ref.FontGlobalScale = GetDpiScale(window);
-    // }
 
     void UserInterface::loadFont()
     {
@@ -246,7 +225,7 @@ namespace imgui_kit
 
     void UserInterface::loadBackgroundImage()
     {
-        bool ret = LoadTextureFromFile(backgroundImageTexture.parameters.path.c_str(), 
+        const bool ret = LoadTextureFromFile(backgroundImageTexture.parameters.path.c_str(),
         &backgroundImageTexture.texture, 
         &backgroundImageTexture.parameters.width, 
         &backgroundImageTexture.parameters.height);
@@ -341,7 +320,7 @@ namespace imgui_kit
             std::cerr << "Invalid GLFW window." << std::endl;
     }
 
-    void UserInterface::updateFontGlobalScale()
+    void UserInterface::updateFontGlobalScale() const
     {
         ImGuiIO& io_ref = ImGui::GetIO(); (void)io_ref;
         io_ref.FontGlobalScale = GetDpiScale(window);
