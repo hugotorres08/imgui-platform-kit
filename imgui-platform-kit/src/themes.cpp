@@ -6,7 +6,8 @@ namespace imgui_kit
 	{
 		static Theme selectedTheme = Theme::Dark;
 
-		if (ImGui::Begin("Style Editor", p_open))
+		ImGui::SetNextWindowSize(ImVec2(500, 80));
+		if (ImGui::Begin("Style Editor", p_open, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse))
 		{
 			const char* currentThemeName = themeNames.at(selectedTheme).c_str();
 			if (ImGui::BeginCombo("Select Theme", currentThemeName))
@@ -62,7 +63,6 @@ namespace imgui_kit
 		style.GrabRounding = 20.0f;
 		style.TabRounding = 4.0f;
 		style.TabBorderSize = 1.0f;
-		//style.TabMinWidthForCloseButton = 0.0f;
 		style.ColorButtonPosition = ImGuiDir_Right;
 		style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 		style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
@@ -153,7 +153,10 @@ namespace imgui_kit
 		style.GrabRounding = 0.0f;
 		style.TabRounding = 10.0f;
 		style.TabBorderSize = 0.0f;
+<<<<<<< HEAD
 		//style.TabMinWidthForCloseButton = 0.0f;
+=======
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 		style.ColorButtonPosition = ImGuiDir_Right;
 		style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 		style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
@@ -244,7 +247,10 @@ namespace imgui_kit
 		style.GrabRounding = 0.0f;
 		style.TabRounding = 4.0f;
 		style.TabBorderSize = 0.0f;
+<<<<<<< HEAD
 		//style.TabMinWidthForCloseButton = 0.0f;
+=======
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 		style.ColorButtonPosition = ImGuiDir_Right;
 		style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 		style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
@@ -335,8 +341,12 @@ namespace imgui_kit
 			style.GrabRounding = 2.0f;
 			style.TabRounding = 4.0f;
 			style.TabBorderSize = 1.0f;
+<<<<<<< HEAD
 			//style.TabMinWidthForCloseButton = 0.0f;
 			style.ColorButtonPosition = ImGuiDir_Right;
+=======
+				style.ColorButtonPosition = ImGuiDir_Right;
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 			style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 			style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
 
@@ -426,8 +436,12 @@ namespace imgui_kit
 			style.GrabRounding = 0.0f;
 			style.TabRounding = 0.0f;
 			style.TabBorderSize = 0.0f;
+<<<<<<< HEAD
 			//style.TabMinWidthForCloseButton = 0.0f;
 			style.ColorButtonPosition = ImGuiDir_Right;
+=======
+				style.ColorButtonPosition = ImGuiDir_Right;
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 			style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 			style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
 
@@ -517,8 +531,12 @@ namespace imgui_kit
 			style.GrabRounding = 0.0f;
 			style.TabRounding = 0.0f;
 			style.TabBorderSize = 1.0f;
+<<<<<<< HEAD
 			//style.TabMinWidthForCloseButton = 0.0f;
 			style.ColorButtonPosition = ImGuiDir_Right;
+=======
+				style.ColorButtonPosition = ImGuiDir_Right;
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 			style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 			style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
 
@@ -608,8 +626,12 @@ namespace imgui_kit
 			style.GrabRounding = 5.0f;
 			style.TabRounding = 5.0f;
 			style.TabBorderSize = 0.0f;
+<<<<<<< HEAD
 			//style.TabMinWidthForCloseButton = 0.0f;
 			style.ColorButtonPosition = ImGuiDir_Right;
+=======
+				style.ColorButtonPosition = ImGuiDir_Right;
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 			style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 			style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
 
@@ -699,8 +721,12 @@ namespace imgui_kit
 			style.GrabRounding = 0.0f;
 			style.TabRounding = 0.0f;
 			style.TabBorderSize = 0.0f;
+<<<<<<< HEAD
 			//style.TabMinWidthForCloseButton = 0.0f;
 			style.ColorButtonPosition = ImGuiDir_Right;
+=======
+				style.ColorButtonPosition = ImGuiDir_Right;
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 			style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 			style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
 
@@ -790,8 +816,12 @@ namespace imgui_kit
 			style.GrabRounding = 2.299999952316284f;
 			style.TabRounding = 4.0f;
 			style.TabBorderSize = 0.0f;
+<<<<<<< HEAD
 			//style.TabMinWidthForCloseButton = 0.0f;
 			style.ColorButtonPosition = ImGuiDir_Right;
+=======
+				style.ColorButtonPosition = ImGuiDir_Right;
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 			style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 			style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
 
@@ -881,8 +911,12 @@ namespace imgui_kit
 			style.GrabRounding = 4.0f;
 			style.TabRounding = 4.0f;
 			style.TabBorderSize = 0.0f;
+<<<<<<< HEAD
 			//style.TabMinWidthForCloseButton = 0.0f;
 			style.ColorButtonPosition = ImGuiDir_Right;
+=======
+				style.ColorButtonPosition = ImGuiDir_Right;
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 			style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 			style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
 
@@ -972,8 +1006,12 @@ namespace imgui_kit
 			style.GrabRounding = 0.0f;
 			style.TabRounding = 0.0f;
 			style.TabBorderSize = 0.0f;
+<<<<<<< HEAD
 			//style.TabMinWidthForCloseButton = 0.0f;
 			style.ColorButtonPosition = ImGuiDir_Right;
+=======
+				style.ColorButtonPosition = ImGuiDir_Right;
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 			style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 			style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
 
@@ -1063,8 +1101,12 @@ namespace imgui_kit
 			style.GrabRounding = 3.0f;
 			style.TabRounding = 4.0f;
 			style.TabBorderSize = 1.0f;
+<<<<<<< HEAD
 			//style.TabMinWidthForCloseButton = 0.0f;
 			style.ColorButtonPosition = ImGuiDir_Right;
+=======
+				style.ColorButtonPosition = ImGuiDir_Right;
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 			style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 			style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
 
@@ -1154,8 +1196,12 @@ namespace imgui_kit
 			style.GrabRounding = 0.0f;
 			style.TabRounding = 0.0f;
 			style.TabBorderSize = 0.0f;
+<<<<<<< HEAD
 			//style.TabMinWidthForCloseButton = 0.0f;
 			style.ColorButtonPosition = ImGuiDir_Right;
+=======
+				style.ColorButtonPosition = ImGuiDir_Right;
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 			style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 			style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
 
@@ -1245,8 +1291,12 @@ namespace imgui_kit
 			style.GrabRounding = 1.0f;
 			style.TabRounding = 4.0f;
 			style.TabBorderSize = 0.0f;
+<<<<<<< HEAD
 			//style.TabMinWidthForCloseButton = 0.0f;
 			style.ColorButtonPosition = ImGuiDir_Right;
+=======
+				style.ColorButtonPosition = ImGuiDir_Right;
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 			style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 			style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
 
@@ -1336,8 +1386,12 @@ namespace imgui_kit
 			style.GrabRounding = 2.0f;
 			style.TabRounding = 4.0f;
 			style.TabBorderSize = 1.0f;
+<<<<<<< HEAD
 			//style.TabMinWidthForCloseButton = 0.0f;
 			style.ColorButtonPosition = ImGuiDir_Right;
+=======
+				style.ColorButtonPosition = ImGuiDir_Right;
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 			style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 			style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
 
@@ -1427,8 +1481,12 @@ namespace imgui_kit
 			style.GrabRounding = 0.0f;
 			style.TabRounding = 0.0f;
 			style.TabBorderSize = 0.0f;
+<<<<<<< HEAD
 			//style.TabMinWidthForCloseButton = 0.0f;
 			style.ColorButtonPosition = ImGuiDir_Right;
+=======
+				style.ColorButtonPosition = ImGuiDir_Right;
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 			style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 			style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
 
@@ -1518,8 +1576,12 @@ namespace imgui_kit
 			style.GrabRounding = 4.0f;
 			style.TabRounding = 4.0f;
 			style.TabBorderSize = 0.0f;
+<<<<<<< HEAD
 			//style.TabMinWidthForCloseButton = 0.0f;
 			style.ColorButtonPosition = ImGuiDir_Right;
+=======
+				style.ColorButtonPosition = ImGuiDir_Right;
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 			style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 			style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
 
@@ -1609,8 +1671,12 @@ namespace imgui_kit
 			style.GrabRounding = 0.0f;
 			style.TabRounding = 4.0f;
 			style.TabBorderSize = 0.0f;
+<<<<<<< HEAD
 			//style.TabMinWidthForCloseButton = 0.0f;
 			style.ColorButtonPosition = ImGuiDir_Right;
+=======
+				style.ColorButtonPosition = ImGuiDir_Right;
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 			style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 			style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
 
@@ -1700,8 +1766,12 @@ namespace imgui_kit
 			style.GrabRounding = 0.0f;
 			style.TabRounding = 4.0f;
 			style.TabBorderSize = 0.0f;
+<<<<<<< HEAD
 			//style.TabMinWidthForCloseButton = 0.0f;
 			style.ColorButtonPosition = ImGuiDir_Right;
+=======
+				style.ColorButtonPosition = ImGuiDir_Right;
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 			style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 			style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
 
@@ -1791,8 +1861,12 @@ namespace imgui_kit
 			style.GrabRounding = 3.200000047683716f;
 			style.TabRounding = 3.5f;
 			style.TabBorderSize = 1.0f;
+<<<<<<< HEAD
 			//style.TabMinWidthForCloseButton = 0.0f;
 			style.ColorButtonPosition = ImGuiDir_Right;
+=======
+				style.ColorButtonPosition = ImGuiDir_Right;
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 			style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 			style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
 
@@ -1882,8 +1956,12 @@ namespace imgui_kit
 			style.GrabRounding = 0.0f;
 			style.TabRounding = 0.0f;
 			style.TabBorderSize = 0.0f;
+<<<<<<< HEAD
 			//style.TabMinWidthForCloseButton = 0.0f;
 			style.ColorButtonPosition = ImGuiDir_Left;
+=======
+				style.ColorButtonPosition = ImGuiDir_Left;
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 			style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 			style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
 
@@ -1973,8 +2051,12 @@ namespace imgui_kit
 			style.GrabRounding = 0.0f;
 			style.TabRounding = 4.0f;
 			style.TabBorderSize = 0.0f;
+<<<<<<< HEAD
 			//style.TabMinWidthForCloseButton = 0.0f;
 			style.ColorButtonPosition = ImGuiDir_Right;
+=======
+				style.ColorButtonPosition = ImGuiDir_Right;
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 			style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 			style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
 
@@ -2064,8 +2146,12 @@ namespace imgui_kit
 			style.GrabRounding = 4.599999904632568f;
 			style.TabRounding = 4.0f;
 			style.TabBorderSize = 0.0f;
+<<<<<<< HEAD
 			//style.TabMinWidthForCloseButton = 0.0f;
 			style.ColorButtonPosition = ImGuiDir_Right;
+=======
+				style.ColorButtonPosition = ImGuiDir_Right;
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 			style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 			style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
 
@@ -2155,8 +2241,12 @@ namespace imgui_kit
 			style.GrabRounding = 20.0f;
 			style.TabRounding = 0.0f;
 			style.TabBorderSize = 0.0f;
+<<<<<<< HEAD
 			//style.TabMinWidthForCloseButton = 0.0f;
 			style.ColorButtonPosition = ImGuiDir_Right;
+=======
+				style.ColorButtonPosition = ImGuiDir_Right;
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 			style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 			style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
 
@@ -2246,8 +2336,12 @@ namespace imgui_kit
 			style.GrabRounding = 0.0f;
 			style.TabRounding = 0.0f;
 			style.TabBorderSize = 1.0f;
+<<<<<<< HEAD
 			//style.TabMinWidthForCloseButton = 0.0f;
 			style.ColorButtonPosition = ImGuiDir_Right;
+=======
+				style.ColorButtonPosition = ImGuiDir_Right;
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 			style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 			style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
 
@@ -2337,8 +2431,12 @@ namespace imgui_kit
 			style.GrabRounding = 5.0f;
 			style.TabRounding = 5.0f;
 			style.TabBorderSize = 0.0f;
+<<<<<<< HEAD
 			//style.TabMinWidthForCloseButton = 0.0f;
 			style.ColorButtonPosition = ImGuiDir_Right;
+=======
+				style.ColorButtonPosition = ImGuiDir_Right;
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 			style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 			style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
 
@@ -2428,8 +2526,12 @@ namespace imgui_kit
 			style.GrabRounding = 0.0f;
 			style.TabRounding = 0.0f;
 			style.TabBorderSize = 0.0f;
+<<<<<<< HEAD
 			//style.TabMinWidthForCloseButton = 0.0f;
 			style.ColorButtonPosition = ImGuiDir_Right;
+=======
+				style.ColorButtonPosition = ImGuiDir_Right;
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 			style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 			style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
 
@@ -2519,8 +2621,12 @@ namespace imgui_kit
 			style.GrabRounding = 0.0f;
 			style.TabRounding = 4.0f;
 			style.TabBorderSize = 0.0f;
+<<<<<<< HEAD
 			//style.TabMinWidthForCloseButton = 0.0f;
 			style.ColorButtonPosition = ImGuiDir_Right;
+=======
+				style.ColorButtonPosition = ImGuiDir_Right;
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 			style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 			style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
 
@@ -2610,8 +2716,12 @@ namespace imgui_kit
 			style.GrabRounding = 2.0f;
 			style.TabRounding = 3.5f;
 			style.TabBorderSize = 0.0f;
+<<<<<<< HEAD
 			//style.TabMinWidthForCloseButton = 0.0f;
 			style.ColorButtonPosition = ImGuiDir_Right;
+=======
+				style.ColorButtonPosition = ImGuiDir_Right;
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 			style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 			style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
 
@@ -2701,8 +2811,12 @@ namespace imgui_kit
 			style.GrabRounding = 4.0f;
 			style.TabRounding = 4.0f;
 			style.TabBorderSize = 1.0f;
+<<<<<<< HEAD
 			//style.TabMinWidthForCloseButton = 0.0f;
 			style.ColorButtonPosition = ImGuiDir_Right;
+=======
+				style.ColorButtonPosition = ImGuiDir_Right;
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 			style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 			style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
 
@@ -2793,7 +2907,10 @@ namespace imgui_kit
 		style.GrabRounding = 4.0f;
 		style.TabRounding = 4.0f;
 		style.TabBorderSize = 0.0f;
+<<<<<<< HEAD
 		//style.TabMinWidthForCloseButton = 0.0f;
+=======
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 		style.ColorButtonPosition = ImGuiDir_Right;
 		style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 		style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
@@ -2884,7 +3001,10 @@ namespace imgui_kit
 		style.GrabRounding = 0.0f;
 		style.TabRounding = 4.0f;
 		style.TabBorderSize = 0.0f;
+<<<<<<< HEAD
 		//style.TabMinWidthForCloseButton = 0.0f;
+=======
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 		style.ColorButtonPosition = ImGuiDir_Right;
 		style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 		style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
@@ -2975,7 +3095,10 @@ namespace imgui_kit
 		style.GrabRounding = 0.0f;
 		style.TabRounding = 0.0f;
 		style.TabBorderSize = 0.0f;
+<<<<<<< HEAD
 		//style.TabMinWidthForCloseButton = 0.0f;
+=======
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 		style.ColorButtonPosition = ImGuiDir_Right;
 		style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 		style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
@@ -3066,8 +3189,12 @@ namespace imgui_kit
 			style.GrabRounding = 3.0f;
 			style.TabRounding = 3.0f;
 			style.TabBorderSize = 0.0f;
+<<<<<<< HEAD
 			//style.TabMinWidthForCloseButton = 0.0f;
 			style.ColorButtonPosition = ImGuiDir_Right;
+=======
+				style.ColorButtonPosition = ImGuiDir_Right;
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 			style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 			style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
 
@@ -3157,7 +3284,10 @@ namespace imgui_kit
 		style.GrabRounding = 3.0f;
 		style.TabRounding = 4.0f;
 		style.TabBorderSize = 0.0f;
+<<<<<<< HEAD
 		//style.TabMinWidthForCloseButton = 0.0f;
+=======
+>>>>>>> 75a157bfa9bba867d0d6d2f9da763735f318d1df
 		style.ColorButtonPosition = ImGuiDir_Right;
 		style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
 		style.SelectableTextAlign = ImVec2(0.0f, 0.0f);

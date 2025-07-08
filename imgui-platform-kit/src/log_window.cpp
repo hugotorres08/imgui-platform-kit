@@ -48,12 +48,12 @@ namespace imgui_kit
         if (ImGui::BeginChild("scrolling", ImVec2(0, 0), false, ImGuiWindowFlags_HorizontalScrollbar)) 
         {
             ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
-            for (const auto& entry : logs) 
+            for (const auto& [message, color] : logs)
             {
-                if (filter.PassFilter(entry.message.c_str())) 
+                if (filter.PassFilter(message.c_str())) 
                 {
-                    ImGui::PushStyleColor(ImGuiCol_Text, entry.color);
-                    ImGui::TextEx(entry.message.c_str());
+                    ImGui::PushStyleColor(ImGuiCol_Text, color);
+                    ImGui::TextEx(message.c_str());
                     ImGui::PopStyleColor();
                 }
             }

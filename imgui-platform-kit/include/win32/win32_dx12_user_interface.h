@@ -38,8 +38,8 @@ namespace imgui_kit
 	struct DX12BackgroundImageTexture
 	{
 		ID3D12Resource* texture;
-		D3D12_CPU_DESCRIPTOR_HANDLE srv_cpu_handle;
-		D3D12_GPU_DESCRIPTOR_HANDLE srv_gpu_handle;
+		D3D12_CPU_DESCRIPTOR_HANDLE srv_cpu_handle{};
+		D3D12_GPU_DESCRIPTOR_HANDLE srv_gpu_handle{};
 		BackgroundImageParameters parameters;
 
 		DX12BackgroundImageTexture()
@@ -50,7 +50,7 @@ namespace imgui_kit
 			srv_gpu_handle.ptr = 0;
 		}
 
-		DX12BackgroundImageTexture(BackgroundImageParameters parameters)
+		explicit DX12BackgroundImageTexture(BackgroundImageParameters parameters)
 			: texture(nullptr), parameters(std::move(parameters))
 		{
 			srv_cpu_handle.ptr = 0;
@@ -82,13 +82,13 @@ namespace imgui_kit
 		bool shutdownRequest;
 	public:
 		UserInterface();
-		UserInterface(UserInterfaceParameters parameters);
+		explicit UserInterface(UserInterfaceParameters parameters);
 		~UserInterface() = default;
 
 		void initialize();
 		void render();
 		void shutdown();
-		bool isShutdownRequested() const;
+		[[nodiscard]] bool isShutdownRequested() const;
 		template<typename T, typename... Args>
 		void addWindow(Args&&... args)
 		{
